@@ -4,10 +4,38 @@ const graphicalBoard = document.getElementById('chess-board')
 const blackSquares = document.getElementsByClassName('black square')
 let logicalBoardSquares = []
 let inBetweenCaptures = false
+const drawButton = document.getElementById('draw-button')
+const resignButton = document.getElementById('resign-button')
+const noButton = document.getElementById('no-button')
+const yesButton = document.getElementById('yes-button')
+const drawOfferModal = document.getElementById('draw-offer')
+const gameIsDrawModal = document.getElementById("game-is-draw")
+const gameIsWonModal = document.getElementById("game-is-won")
+const currentTurnBox = document.getElementById("current-turn")
+
+resignButton.addEventListener('click', (event) => {
+    gameIsWonModal.innerText = `Game over. ${currentTurn == "white" ? "red" : "white"} wins`
+    gameIsWonModal.classList.remove('display-none')
+})
+
+drawButton.addEventListener('click', (event) => {
+    event.stopPropagation()
+    drawOfferModal.classList.remove('display-none')
+})
+
+yesButton.addEventListener('click', (event) => {
+    event.stopPropagation()
+    drawOfferModal.classList.add('display-none')
+    gameIsDrawModal.classList.remove('display-none')
+})
+
 
 initPieces()
 printBoard()
-window.addEventListener('click', removeHighlight)
+window.addEventListener('click', () => {
+    removeHighlight()
+    drawOfferModal.classList.add('display-none')
+})
 
 function toggleTurn() {
     currentTurn = currentTurn == "white" ? "red" : "white"//change location
@@ -212,10 +240,14 @@ function squareIsClicked(event) {
 
                 inBetweenCaptures = false
                 toggleTurn()
+                currentTurnBox.classList.toggle('red')
+                currentTurnBox.classList.toggle('white')
                 console.log("is there legal moves: " + isThereLegalMoves())
                 console.log("can current player capture: " + canCurrentPlayerCapture())
-                if (!isThereLegalMoves())
-                    console.log(currentTurn + " loses.")
+                if (!isThereLegalMoves()) {
+                    gameIsWonModal.innerText = `Game over. ${currentTurn == "white" ? "red" : "white"} wins`
+                    gameIsWonModal.classList.remove('display-none')
+                }
 
             }
             removeHighlight()
@@ -261,3 +293,6 @@ function canPieceCapture(squarePiece) {
             return true
     return false
 }
+
+// function endGameInDraw(){
+// }

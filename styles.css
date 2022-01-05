@@ -5,8 +5,8 @@
 
 #chess-board {
     position: absolute;
-    top: 5rem;
-    left: 25vw;
+    /* top: 5rem;
+    left: 25vw; */
     display: grid;
     grid-template-rows: repeat(8, 1fr);
     grid-template-columns: repeat(8, 1fr);
@@ -71,17 +71,25 @@
     top: 30vh;
     left: 17.5vw;
     width: 63vw;
-    height: 40vh;
-    opacity: 70%;
+    height: 40vw;
+    opacity: 90%;
+    background: rgb(85, 77, 189);
+    font-size: 8vw;
+    text-align: center;
+
 }
 
-.end-game-screen {
-    background: rgb(85, 77, 189);
-}
+/* .end-game-screen {
+} */
 
 
 .button {
+    border-color: black;
+    border-style: solid;
+    border-width: 3px;
     opacity: 100%;
+    background: rgb(66, 60, 136);
+
     /* display: inline-block; */
 }
 
@@ -90,37 +98,65 @@
     font-size: 8vw;
     text-align: center;
     display: grid;
-    grid-template-rows: repeat(5, 1fr);
-    grid-template-columns: 100px, 100px;
-}
-
-.buttons {
-    width: 100%
+    grid-template-rows: 3fr 2fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'accept-draw accept-draw'
+        'yes no';
 }
 
 .yes {
-    width: 49%;
-    float: right;
+    grid-area: yes;
 }
 
 .no {
-    width: 49%;
+    grid-area: no;
 }
 
-/* .accept-draw {
-    margin-top: 5%;
-} */
+.accept-draw {
+    grid-area: accept-draw;
 
-.grid-container{
-    background: rgb(85, 77, 189);
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    width: 100vw;
-    left: 0;
 }
 
 
-/* .display-none {
+.resign {
+    position: fixed;
+    top: 25vw;
+    right: 5vw;
+    width: 10vw;
+    height: 5vw;
+    background: rgb(158, 49, 49);
+    text-align: center;
+    font-size: 3.0vw;
+
+}
+
+.draw {
+    position: fixed;
+    top: 15vw;
+    right: 5vw;
+    width: 10vw;
+    height: 5vw;
+    background: rgb(82, 172, 164);
+    text-align: center;
+    font-size: 3.0vw;
+
+}
+
+.display-none {
     display: none;
-} */
+}
+.current-turn {
+    position: fixed;
+    top: 5vw;
+    right: 5vw;
+    width: 10vw;
+    height: 5vw;
+    text-align: center;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+    font-size: 2vw;
+}
+.game-is-won{
+    height: 20vw;
+}

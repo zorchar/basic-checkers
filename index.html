@@ -10,20 +10,28 @@
 </head>
 
 <body>
-    <div></div>
     <div id="chess-board"></div>
-    <div class="modal draw-offer display-none">
-        <!-- <div class="accept-draw">
+    <div id="resign-button" class="resign">
+        Resign
+    </div>
+    <div id="draw-button" class="draw">
+        Draw
+    </div>
+    <div id="current-turn" class="white current-turn">
+        Current turn
+    </div>
+    <div id="game-is-draw" class="modal display-none">Game drawn</div>
+    <div id="game-is-won" class="modal display-none game-is-won"></div>
+    <div id="draw-offer" class="modal display-none">
+        <div class="accept-draw">
             Would you like to accept draw?
         </div>
-        <div class="buttons">
-            <div class="yes button">
-                <input type="button" value="Yes" />
+            <div id="yes-button" class="yes button">
+                Yes
             </div>
-            <div class="no button">
-                <input type="button" value="No" />
+            <div id="no-button" class="no button">
+                No
             </div>
-        </div> -->
     </div>
     <script src="main.js"></script>
 </body>
