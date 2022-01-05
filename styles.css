@@ -76,6 +76,8 @@
     background: rgb(85, 77, 189);
     font-size: 8vw;
     text-align: center;
+    z-index: 4;
+
 
 }
 
@@ -102,6 +104,7 @@
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 'accept-draw accept-draw'
         'yes no';
+    top:15vh;
 }
 
 .yes {
@@ -141,7 +144,13 @@
     font-size: 3.0vw;
 
 }
-
+.back-drop{
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    opacity: 80%;
+    z-index: 3;
+}
 .display-none {
     display: none;
 }
@@ -158,5 +167,8 @@
     font-size: 2vw;
 }
 .game-is-won{
+    height: 20vw;
+}
+.game-is-draw{
     height: 20vw;
 }

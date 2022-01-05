@@ -12,15 +12,23 @@ const drawOfferModal = document.getElementById('draw-offer')
 const gameIsDrawModal = document.getElementById("game-is-draw")
 const gameIsWonModal = document.getElementById("game-is-won")
 const currentTurnBox = document.getElementById("current-turn")
+const backDrop = document.getElementById("back-drop")
+
+backDrop.addEventListener('click',(event)=>{
+    event.stopPropagation()
+})
 
 resignButton.addEventListener('click', (event) => {
+    event.stopPropagation()
     gameIsWonModal.innerText = `Game over. ${currentTurn == "white" ? "red" : "white"} wins`
     gameIsWonModal.classList.remove('display-none')
+    backDrop.classList.remove('display-none')
 })
 
 drawButton.addEventListener('click', (event) => {
     event.stopPropagation()
     drawOfferModal.classList.remove('display-none')
+    backDrop.classList.remove('display-none')
 })
 
 yesButton.addEventListener('click', (event) => {
@@ -35,6 +43,7 @@ printBoard()
 window.addEventListener('click', () => {
     removeHighlight()
     drawOfferModal.classList.add('display-none')
+    backDrop.classList.add('display-none')
 })
 
 function toggleTurn() {
@@ -247,6 +256,7 @@ function squareIsClicked(event) {
                 if (!isThereLegalMoves()) {
                     gameIsWonModal.innerText = `Game over. ${currentTurn == "white" ? "red" : "white"} wins`
                     gameIsWonModal.classList.remove('display-none')
+                    backDrop.classList.remove('display-none')
                 }
 
             }
