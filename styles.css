@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#chess-board {
+    position: absolute;
+    top: 5rem;
+    left: 25vw;
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    width: calc(47.2vw + 6px);
+    border-style: solid;
+    border-width: 3px;
+}
+
+.black {
+    background: black;
+    border-color: black;
+}
+
+.red {
+    background: red;
+    border-color: red;
+}
+
+.white {
+    background: white;
+    border-color: white;
+}
+
+.square {
+    width: 5.9vw;
+    height: 5.9vw;
+}
+
+.piece {
+    box-sizing: border-box;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    width: 5.9vw;
+    height: 5.9vw;
+}
+
+.red.chosen {
+    background: rgb(182, 68, 102);
+}
+
+.white.chosen {
+    background: rgb(161, 174, 182);
+}
+
+.king {
+    position: relative;
+    bottom: 75%;
+    width: 2.9vw;
+    height: 2.9vw;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    left: 25%
+}
+
+.modal {
+    position: fixed;
+    top: 30vh;
+    left: 17.5vw;
+    width: 63vw;
+    height: 40vh;
+    opacity: 70%;
+}
+
+.end-game-screen {
+    background: rgb(85, 77, 189);
+}
+
+
+.button {
+    opacity: 100%;
+    /* display: inline-block; */
+}
+
+.draw-offer {
+    background: rgb(85, 77, 189);
+    font-size: 8vw;
+    text-align: center;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: 100px, 100px;
+}
+
+.buttons {
+    width: 100%
+}
+
+.yes {
+    width: 49%;
+    float: right;
+}
+
+.no {
+    width: 49%;
+}
+
+/* .accept-draw {
+    margin-top: 5%;
+} */
+
+.grid-container{
+    background: rgb(85, 77, 189);
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 100vw;
+    left: 0;
+}
+
+
+/* .display-none {
+    display: none;
+} */
