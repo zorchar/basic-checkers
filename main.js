@@ -13,8 +13,9 @@ const gameIsDrawModal = document.getElementById("game-is-draw")
 const gameIsWonModal = document.getElementById("game-is-won")
 const currentTurnBox = document.getElementById("current-turn")
 const backDrop = document.getElementById("back-drop")
+let squaresWhichCanCapture = []
 
-backDrop.addEventListener('click',(event)=>{
+backDrop.addEventListener('click', (event) => {
     event.stopPropagation()
 })
 
@@ -221,10 +222,13 @@ function squareIsClicked(event) {
         if (chosenPiece != undefined && chosenPiece.classList.contains(currentTurn == "white" ? "white" : "red")) {
             if (isLegalMove(IndexFrom, indexTo)) {
 
-                if (Math.abs(getRow(IndexFrom) - getRow(indexTo)) == 1 && canCurrentPlayerCapture()) {
+                if (Math.abs(getRow(IndexFrom) - getRow(indexTo)) == 1) {
                     removeHighlight()
-                    console.log("must capture")
-                    return
+                    // burn pieces
+                    for(let square of squaresWhichCanCapture){
+                        delete square.color
+                        delete square.type
+                    }
                 }
 
                 makeMove(IndexFrom, indexTo)
@@ -248,16 +252,19 @@ function squareIsClicked(event) {
                 }
 
                 inBetweenCaptures = false
+
                 toggleTurn()
+                canCurrentPlayerCapture()
                 currentTurnBox.classList.toggle('red')
                 currentTurnBox.classList.toggle('white')
-                console.log("is there legal moves: " + isThereLegalMoves())
-                console.log("can current player capture: " + canCurrentPlayerCapture())
+
+
                 if (!isThereLegalMoves()) {
                     gameIsWonModal.innerText = `Game over. ${currentTurn == "white" ? "red" : "white"} wins`
                     gameIsWonModal.classList.remove('display-none')
                     backDrop.classList.remove('display-none')
                 }
+
 
             }
             removeHighlight()
@@ -279,13 +286,17 @@ function isThereLegalMoves() {
 }
 
 function canCurrentPlayerCapture() {
+    let canCapture = false
+    squaresWhichCanCapture = []
     for (let square of logicalBoardSquares) {
         if (square == undefined || square.type == undefined || square.color != currentTurn)
             continue
-        if (canPieceCapture(square))
-            return true
+        if (canPieceCapture(square)) {
+            squaresWhichCanCapture.push(square)
+            canCapture = true
+        }
     }
-    return false
+    return canCapture
 }
 
 function canPieceCapture(squarePiece) {
