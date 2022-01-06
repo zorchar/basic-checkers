@@ -81,10 +81,6 @@
 
 }
 
-/* .end-game-screen {
-} */
-
-
 .button {
     border-color: black;
     border-style: solid;
@@ -104,7 +100,7 @@
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 'accept-draw accept-draw'
         'yes no';
-    top:15vh;
+    top: 15vh;
 }
 
 .yes {
@@ -144,16 +140,19 @@
     font-size: 3.0vw;
 
 }
-.back-drop{
+
+.back-drop {
     width: 100vw;
     height: 100vh;
     background: black;
     opacity: 80%;
     z-index: 3;
 }
+
 .display-none {
     display: none;
 }
+
 .current-turn {
     position: fixed;
     top: 5vw;
@@ -166,9 +165,46 @@
     border-width: 2px;
     font-size: 2vw;
 }
-.game-is-won{
+
+.game-is-won {
     height: 20vw;
 }
-.game-is-draw{
+
+.game-is-draw {
     height: 20vw;
+}
+
+@media(max-width:20rem) {
+    .draw-offer {
+        top: 20vw;
+        left: 15vw;
+    }
+
+    .game-is-won {
+        top: 35vw;
+        left: 15vw;
+
+    }
+    .draw{
+        left:0vw;
+        width:100vw;
+        height: 30vw;
+        top:49vw;
+        font-size: 15vw;
+    }
+    .current-turn{
+        right:0vw;
+        width:51vw;
+        height: 49vw;
+        top:0vw;
+        font-size: 15vw;
+    }
+    .resign{
+        right:0vw;
+        width:100vw;
+        height: 30vw;
+        top:79vw;
+        font-size: 15vw;
+
+    }
 }
