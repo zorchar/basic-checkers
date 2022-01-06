@@ -137,6 +137,7 @@ function AddPiecesToGraphicalBoard() {
         if (logicalBoardSquares[i].color == undefined)
             continue
         const piece = document.createElement('div')
+        piece.draggable="true"
         piece.addEventListener('click', (event) => {
             event.stopPropagation()
             if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red"))

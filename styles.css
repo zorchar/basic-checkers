@@ -43,6 +43,7 @@
     border-color: black;
     width: 5.9vw;
     height: 5.9vw;
+    cursor: move;
 }
 
 .red.chosen {
@@ -174,7 +175,35 @@
     height: 20vw;
 }
 
-@media(max-width:20rem) {
+@media(max-width:25rem) {
+    #chess-board {
+        position: absolute;
+        /* top: 5rem;
+        left: 25vw; */
+        display: grid;
+        grid-template-rows: repeat(8, 1fr);
+        grid-template-columns: repeat(8, 1fr);
+        width: 100vw;
+        border-style: solid;
+        border-width: 3px;
+        border-right-width: 3px;
+    }
+    .square {
+        width: 11.8vw;
+        height: 11.8vw;
+    }
+    
+    .piece {
+        width: 11.8vw;
+        height: 11.8vw;
+    }
+        
+    .king {
+        width: 5.8vw;
+        height: 5.8vw;
+    }
+    
+    
     .draw-offer {
         top: 20vw;
         left: 15vw;
@@ -182,29 +211,30 @@
 
     .game-is-won {
         top: 35vw;
-        left: 15vw;
+        left: 18vw;
+        
 
-    }
-    .draw{
-        left:0vw;
-        width:100vw;
-        height: 30vw;
-        top:49vw;
-        font-size: 15vw;
     }
     .current-turn{
         right:0vw;
-        width:51vw;
-        height: 49vw;
-        top:0vw;
+        width:100vw;
+        height: 25vw;
+        top:95vw;
+        font-size: 15vw;
+    }
+    .draw{
+        left:0vw;
+        width:99.9vw;
+        height: 25vw;
+        top:120vw;
         font-size: 15vw;
     }
     .resign{
         right:0vw;
         width:100vw;
-        height: 30vw;
-        top:79vw;
+        height: 25vw;
+        top:145vw;
         font-size: 15vw;
-
     }
+
 }
