@@ -41,9 +41,12 @@
     border-style: solid;
     border-width: 3px;
     border-color: black;
-    width: 5.9vw;
-    height: 5.9vw;
+    width: 5.8vw;
+    height: 5.8vw;
     cursor: move;
+    position: relative;
+    top: 1%;
+    left: 1%;
 }
 
 .red.chosen {
@@ -64,7 +67,9 @@
     border-style: solid;
     border-width: 3px;
     border-color: black;
-    left: 25%
+    left: 25%;
+    cursor: move;
+    background: transparent;
 }
 
 .modal {
@@ -173,6 +178,9 @@
 
 .game-is-draw {
     height: 20vw;
+}
+.transparent{
+    background: transparent;
 }
 
 @media(max-width:25rem) {

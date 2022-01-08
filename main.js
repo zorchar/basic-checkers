@@ -89,7 +89,16 @@ function printBoard() {
             else
                 theSquare = j % 2 == 0 ? blackSquare : whiteSquare
             theSquare.id = i * 8 + j
+            // theSquare.addEventListener('dragstart', (event)=>{
+            //     event.stopPropagation()
+            //     event.preventDefault()
+            // })
+            theSquare.addEventListener('dragover', (event) => {
+                event.stopPropagation()
+                event.preventDefault()
+            })
             theSquare.addEventListener('click', squareIsClicked)
+            theSquare.addEventListener('drop', squareIsClicked)
             graphicalBoard.appendChild(theSquare)
         }
     }
@@ -137,7 +146,7 @@ function AddPiecesToGraphicalBoard() {
         if (logicalBoardSquares[i].color == undefined)
             continue
         const piece = document.createElement('div')
-        piece.draggable="true"
+        piece.draggable = "true"
         piece.addEventListener('click', (event) => {
             event.stopPropagation()
             if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red"))
@@ -149,6 +158,27 @@ function AddPiecesToGraphicalBoard() {
                 chosenPiece = event.target
             }
         })
+        piece.addEventListener('dragstart', (event) => {
+            event.stopPropagation()
+
+            if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red")) {
+                event.preventDefault()
+                removeHighlight()
+            }
+            else {
+                if (chosenPiece != undefined && chosenPiece != event.target)
+                    chosenPiece.classList.remove('chosen')
+                piece.classList.toggle('chosen')
+                chosenPiece = event.target
+                event.target.parentElement.classList.add("transparent")
+            }
+        })
+        piece.addEventListener('dragover', (event) => {
+            event.stopPropagation()
+            event.preventDefault()
+            event.target.parentElement.classList.remove("transparent")
+
+        })
         piece.classList.add('piece')
         if (logicalBoardSquares[i].color == "white")
             piece.classList.add('white')
@@ -158,9 +188,21 @@ function AddPiecesToGraphicalBoard() {
         //if is king
         const king = document.createElement('div')
         king.classList.add("king")
+        king.draggable = "true"
         if (logicalBoardSquares[i].type == "king") {
             graphicalBoard.children[i].appendChild(king)
             king.addEventListener('click', (event) => {
+                event.stopPropagation()
+                if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red"))
+                    removeHighlight()
+                else {
+                    if (chosenPiece != undefined && chosenPiece != event.target.previousElementSibling)
+                        chosenPiece.classList.remove('chosen')
+                    event.target.previousElementSibling.classList.toggle('chosen')
+                    chosenPiece = event.target.previousElementSibling
+                }
+            })
+            king.addEventListener('dragstart', (event) => {
                 event.stopPropagation()
                 if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red"))
                     removeHighlight()
