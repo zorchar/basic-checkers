@@ -48,6 +48,12 @@
     top: 1%;
     left: 1%;
 }
+.king .piece{
+    position: absolute;
+    top: -1.67vw;
+    left: -1.82vw;
+    
+}
 
 .red.chosen {
     background: rgb(182, 68, 102);
@@ -59,7 +65,8 @@
 
 .king {
     position: relative;
-    bottom: 75%;
+    margin: 1.6vw;
+    bottom: 100%;
     width: 2.9vw;
     height: 2.9vw;
     box-sizing: border-box;
@@ -67,7 +74,7 @@
     border-style: solid;
     border-width: 3px;
     border-color: black;
-    left: 25%;
+    /* left: 25%; */
     cursor: move;
     background: transparent;
 }

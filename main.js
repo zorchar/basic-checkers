@@ -96,6 +96,8 @@ function printBoard() {
             theSquare.addEventListener('dragover', (event) => {
                 event.stopPropagation()
                 event.preventDefault()
+                event.target.classList.remove("transparent")
+                event.target.parentElement.classList.remove("transparent")
             })
             theSquare.addEventListener('click', squareIsClicked)
             theSquare.addEventListener('drop', squareIsClicked)
@@ -177,7 +179,6 @@ function AddPiecesToGraphicalBoard() {
             event.stopPropagation()
             event.preventDefault()
             event.target.parentElement.classList.remove("transparent")
-
         })
         piece.classList.add('piece')
         if (logicalBoardSquares[i].color == "white")
@@ -204,7 +205,7 @@ function AddPiecesToGraphicalBoard() {
             })
             king.addEventListener('dragstart', (event) => {
                 event.stopPropagation()
-                if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red")){
+                if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red")) {
                     event.preventDefault()
                     removeHighlight()
                 }
@@ -213,8 +214,31 @@ function AddPiecesToGraphicalBoard() {
                         chosenPiece.classList.remove('chosen')
                     event.target.previousElementSibling.classList.toggle('chosen')
                     chosenPiece = event.target.previousElementSibling
+                    // add piece background
+                    const backgroundPiece = document.createElement('div')
+                    backgroundPiece.addEventListener('dragover', (event) => {
+                        event.stopPropagation()
+                        event.preventDefault()
+
+                        event.target.parentElement.parentElement.classList.remove("transparent")
+                    })
+                    backgroundPiece.classList.add('piece')
+                    if (logicalBoardSquares[i].color == "white")
+                        piece.classList.add('white')
+                    else
+                        piece.classList.add('red')
+                    if (event.target.children[0] == undefined)
+                        event.target.appendChild(backgroundPiece)
+                    event.target.parentElement.classList.add("transparent")
                 }
             })
+            king.addEventListener('dragover', (event) => {
+                event.stopPropagation()
+                event.preventDefault()
+                event.target.parentElement.classList.remove("transparent")
+                // event.target.replaceChildren() maybe use in another place
+            })
+
         }
     }
 }
