@@ -204,8 +204,10 @@ function AddPiecesToGraphicalBoard() {
             })
             king.addEventListener('dragstart', (event) => {
                 event.stopPropagation()
-                if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red"))
+                if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red")){
+                    event.preventDefault()
                     removeHighlight()
+                }
                 else {
                     if (chosenPiece != undefined && chosenPiece != event.target.previousElementSibling)
                         chosenPiece.classList.remove('chosen')
