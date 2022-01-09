@@ -1,9 +1,19 @@
-let currentTurn = "white"
-let chosenPiece
+const checkersLogic = {
+    currentTurn: "white",
+    chosenPiece: undefined,
+    logicalBoardSquares: [],
+    inBetweenCaptures: false,
+    sayHello:func1
+}
+checkersLogic.sayHello()
+function func1(){
+    alert('hellp')
+}
+// let currentTurn = "white"
+// let chosenPiece
+// let logicalBoardSquares = []
+// let inBetweenCaptures = false
 const graphicalBoard = document.getElementById('chess-board')
-const blackSquares = document.getElementsByClassName('black square')
-let logicalBoardSquares = []
-let inBetweenCaptures = false
 const drawButton = document.getElementById('draw-button')
 const resignButton = document.getElementById('resign-button')
 const noButton = document.getElementById('no-button')
@@ -39,7 +49,7 @@ window.addEventListener('click', () => {
 initPieces()
 printBoard()
 function toggleTurn() {
-    currentTurn = currentTurn == "white" ? "red" : "white"
+    checkersLogic.currentTurn = checkersLogic.currentTurn == "white" ? "red" : "white"
     currentTurnBox.classList.toggle('white')
 }
 function getRow(index) {
@@ -51,14 +61,14 @@ function getColumn(index) {
 function isLegalMove(from, to) {
     const verticalStep = getRow(to) - getRow(from)
     const horizontalStep = getColumn(to) - getColumn(from)
-    if (logicalBoardSquares[to] == undefined)
+    if (checkersLogic.logicalBoardSquares[to] == undefined)
         return false
-    if (!inBetweenCaptures && verticalStep == (logicalBoardSquares[from].color == "white" ? -1 : 1) && Math.abs(horizontalStep) == 1 && logicalBoardSquares[to].type == undefined)
+    if (!checkersLogic.inBetweenCaptures && verticalStep == (checkersLogic.logicalBoardSquares[from].color == "white" ? -1 : 1) && Math.abs(horizontalStep) == 1 && checkersLogic.logicalBoardSquares[to].type == undefined)
         return true
-    else if (Math.abs(verticalStep) == 2 && Math.abs(horizontalStep) == 2 && logicalBoardSquares[to].type == undefined && logicalBoardSquares[from + horizontalStep / 2 + verticalStep / 2 * 8].color == (logicalBoardSquares[from].color == "white" ? "red" : "white"))
+    else if (Math.abs(verticalStep) == 2 && Math.abs(horizontalStep) == 2 && checkersLogic.logicalBoardSquares[to].type == undefined && checkersLogic.logicalBoardSquares[from + horizontalStep / 2 + verticalStep / 2 * 8].color == (checkersLogic.logicalBoardSquares[from].color == "white" ? "red" : "white"))
         return true
-    else if (logicalBoardSquares[from].type == "king") {
-        if (Math.abs(verticalStep) == 1 && Math.abs(horizontalStep) == 1 && logicalBoardSquares[to].type == undefined)
+    else if (checkersLogic.logicalBoardSquares[from].type == "king") {
+        if (Math.abs(verticalStep) == 1 && Math.abs(horizontalStep) == 1 && checkersLogic.logicalBoardSquares[to].type == undefined)
             return true
     }
     return false
@@ -66,13 +76,13 @@ function isLegalMove(from, to) {
 function makeMove(from, to) {
     const verticalStep = getRow(to) - getRow(from)
     const horizontalStep = getColumn(to) - getColumn(from)
-    logicalBoardSquares[to].type = logicalBoardSquares[from].type
-    logicalBoardSquares[to].color = logicalBoardSquares[from].color
-    delete logicalBoardSquares[from].type
-    delete logicalBoardSquares[from].color
+    checkersLogic.logicalBoardSquares[to].type = checkersLogic.logicalBoardSquares[from].type
+    checkersLogic.logicalBoardSquares[to].color = checkersLogic.logicalBoardSquares[from].color
+    delete checkersLogic.logicalBoardSquares[from].type
+    delete checkersLogic.logicalBoardSquares[from].color
     if (Math.abs(horizontalStep) == 2) {
-        delete logicalBoardSquares[from + horizontalStep / 2 + verticalStep / 2 * 8].type
-        delete logicalBoardSquares[from + horizontalStep / 2 + verticalStep / 2 * 8].color
+        delete checkersLogic.logicalBoardSquares[from + horizontalStep / 2 + verticalStep / 2 * 8].type
+        delete checkersLogic.logicalBoardSquares[from + horizontalStep / 2 + verticalStep / 2 * 8].color
     }
 }
 function printBoard() {
@@ -104,46 +114,46 @@ function initPieces() {
     for (let i = 0; i < 24; i++) {
         if (getRow(i) % 2 == 0) {
             if ((getColumn(i)) % 2 == 1)
-                logicalBoardSquares[i] = { type: "pawn", color: "red", id: i }
+                checkersLogic.logicalBoardSquares[i] = { type: "pawn", color: "red", id: i }
         }
         else
             if (getColumn(i) % 2 == 0)
-                logicalBoardSquares[i] = { type: "pawn", color: "red", id: i }
+                checkersLogic.logicalBoardSquares[i] = { type: "pawn", color: "red", id: i }
     }
     for (let i = 24; i < 40; i++) {
         if (getRow(i) % 2 == 0) {
             if ((getColumn(i)) % 2 == 1)
-                logicalBoardSquares[i] = { id: i }
+                checkersLogic.logicalBoardSquares[i] = { id: i }
         }
         else {
             if (getColumn(i) % 2 == 0)
-                logicalBoardSquares[i] = { id: i }
+                checkersLogic.logicalBoardSquares[i] = { id: i }
         }
     }
     for (let i = 40; i < 64; i++) {
         if (getRow(i) % 2 == 0) {
             if (getColumn(i) % 2 == 1)
-                logicalBoardSquares[i] = { type: "pawn", color: "white", id: i }
+                checkersLogic.logicalBoardSquares[i] = { type: "pawn", color: "white", id: i }
         }
         else
             if (getColumn(i) % 2 == 0)
-                logicalBoardSquares[i] = { type: "pawn", color: "white", id: i }
+                checkersLogic.logicalBoardSquares[i] = { type: "pawn", color: "white", id: i }
     }
 }
 function removeHighlight() {
-    if (chosenPiece != undefined)
-        chosenPiece.classList.remove('chosen')
-    chosenPiece = undefined
+    if (checkersLogic.chosenPiece != undefined)
+        checkersLogic.chosenPiece.classList.remove('chosen')
+    checkersLogic.chosenPiece = undefined
 }
 function PieceDragStart(event) {
     event.stopPropagation()
-    if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red"))
+    if (!event.target.classList.contains(checkersLogic.currentTurn == "white" ? "white" : "red"))
         event.preventDefault()
     else {
-        if (chosenPiece != undefined && chosenPiece != event.target)
-            chosenPiece.classList.remove('chosen')
+        if (checkersLogic.chosenPiece != undefined && checkersLogic.chosenPiece != event.target)
+            checkersLogic.chosenPiece.classList.remove('chosen')
         event.target.classList.toggle('chosen')
-        chosenPiece = event.target
+        checkersLogic.chosenPiece = event.target
         event.target.parentElement.classList.add("transparent")
     }
 }
@@ -158,7 +168,7 @@ function CreatePiece(i) {
         event.target.parentElement.classList.remove("transparent")
     })
     piece.classList.add('piece')
-    if (logicalBoardSquares[i].color == "white")
+    if (checkersLogic.logicalBoardSquares[i].color == "white")
         piece.classList.add('white')
     else
         piece.classList.add('red')
@@ -166,10 +176,10 @@ function CreatePiece(i) {
 }
 function AddPiecesToGraphicalBoard() {
     for (let i = 0; i < 63; i++) {
-        if (logicalBoardSquares[i] == undefined || logicalBoardSquares[i].color == undefined)
+        if (checkersLogic.logicalBoardSquares[i] == undefined || checkersLogic.logicalBoardSquares[i].color == undefined)
             continue
         graphicalBoard.children[i].appendChild(CreatePiece(i))
-        if (logicalBoardSquares[i].type == "king") {
+        if (checkersLogic.logicalBoardSquares[i].type == "king") {
             graphicalBoard.children[i].appendChild(CreateKing())
         }
     }
@@ -191,39 +201,39 @@ function squareIsTarget(event) {
     event.stopPropagation()
     let indexFrom
     let indexTo = parseInt(event.target.id)
-    if (chosenPiece != undefined)
-        indexFrom = parseInt(chosenPiece.parentElement.id)
+    if (checkersLogic.chosenPiece != undefined)
+        indexFrom = parseInt(checkersLogic.chosenPiece.parentElement.id)
     if (event.target.classList.contains("white"))
         removeHighlight()
     //if square has a piece
     else if (event.target.children[0] != undefined) {
         //if current turn's piece
-        if (event.target.children[0].classList.contains(currentTurn == "white" ? "white" : "red")) {
-            if (chosenPiece != undefined && chosenPiece != event.target.children[0])
-                chosenPiece.classList.remove('chosen')
+        if (event.target.children[0].classList.contains(checkersLogic.currentTurn == "white" ? "white" : "red")) {
+            if (checkersLogic.chosenPiece != undefined && checkersLogic.chosenPiece != event.target.children[0])
+                checkersLogic.chosenPiece.classList.remove('chosen')
             event.target.children[0].classList.toggle('chosen')
-            chosenPiece = event.target.children[0]
+            checkersLogic.chosenPiece = event.target.children[0]
         }
         else
             removeHighlight()
     }
     //if square is empty
     else {
-        if (chosenPiece != undefined && chosenPiece.classList.contains(currentTurn == "white" ? "white" : "red")) {
+        if (checkersLogic.chosenPiece != undefined && checkersLogic.chosenPiece.classList.contains(checkersLogic.currentTurn == "white" ? "white" : "red")) {
             if (isLegalMove(indexFrom, indexTo)) {
                 if (Math.abs(getRow(indexFrom) - getRow(indexTo)) == 1)
                     burnPiecesWhichCanCapture()
                 makeMove(indexFrom, indexTo)
-                if (getRow(indexTo) == (currentTurn == "white" ? 0 : 7))
-                    logicalBoardSquares[indexTo].type = "king"
+                if (getRow(indexTo) == (checkersLogic.currentTurn == "white" ? 0 : 7))
+                    checkersLogic.logicalBoardSquares[indexTo].type = "king"
                 printBoard()
                 if (canKeepCapturing(indexFrom, indexTo))
                     return
-                inBetweenCaptures = false
-                if (!isThereLegalMoves())
+                checkersLogic.inBetweenCaptures = false
+                if (!AreThereLegalMoves())
                     endGameWithWin()
                 toggleTurn()
-                if (!isThereLegalMoves())
+                if (!AreThereLegalMoves())
                     endGameWithWin()
             }
             removeHighlight()
@@ -232,9 +242,9 @@ function squareIsTarget(event) {
             removeHighlight()
     }
 }
-function isThereLegalMoves() {
-    for (let square of logicalBoardSquares) {
-        if (square == undefined || square.type == undefined || square.color != currentTurn)
+function AreThereLegalMoves() {
+    for (let square of checkersLogic.logicalBoardSquares) {
+        if (square == undefined || square.type == undefined || square.color != checkersLogic.currentTurn)
             continue
         for (let i = 0; i < 63; i++)
             if (square.id != undefined && isLegalMove(square.id, i))
@@ -243,8 +253,8 @@ function isThereLegalMoves() {
     return false
 }
 function burnPiecesWhichCanCapture() {
-    for (let square of logicalBoardSquares) {
-        if (square == undefined || square.type == undefined || square.color != currentTurn)
+    for (let square of checkersLogic.logicalBoardSquares) {
+        if (square == undefined || square.type == undefined || square.color != checkersLogic.currentTurn)
             continue
         if (canPieceCapture(square)) {
             delete square.color
@@ -268,68 +278,69 @@ function canPieceCapture(squarePiece) {
     return false
 }
 function endGameWithWin() {
-    gameIsWonModal.innerText = `Game over. ${currentTurn == "white" ? "Red" : "White"} wins.`
+    gameIsWonModal.innerText = `Game over. ${checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
     gameIsWonModal.classList.remove('display-none')
     backDrop.classList.remove('display-none')
 }
 function canKeepCapturing(indexFrom, indexTo) {
-    if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && canPieceCapture(logicalBoardSquares[indexTo])) {
+    if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && canPieceCapture(checkersLogic.logicalBoardSquares[indexTo])) {
         removeHighlight()
-        chosenPiece = graphicalBoard.children[indexTo].firstChild
-        chosenPiece.classList.toggle('chosen')
-        inBetweenCaptures = true
+        checkersLogic.chosenPiece = graphicalBoard.children[indexTo].firstChild
+        checkersLogic.chosenPiece.classList.toggle('chosen')
+        checkersLogic.inBetweenCaptures = true
         return true
     }
 }
 function PieceClick(event) {
     event.stopPropagation()
-    if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red")) {
+    if (!event.target.classList.contains(checkersLogic.currentTurn == "white" ? "white" : "red")) {
         removeHighlight()
     }
     else {
-        if (chosenPiece != undefined && chosenPiece != event.target)
-            chosenPiece.classList.remove('chosen')
+        if (checkersLogic.chosenPiece != undefined && checkersLogic.chosenPiece != event.target)
+            checkersLogic.chosenPiece.classList.remove('chosen')
         event.target.classList.toggle('chosen')
-        chosenPiece = event.target
+        checkersLogic.chosenPiece = event.target
     }
 }
 function KingClick(event) {
     event.stopPropagation()
-    if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red"))
+    if (!event.target.previousElementSibling.classList.contains(checkersLogic.currentTurn == "white" ? "white" : "red"))
         removeHighlight()
     else {
-        if (chosenPiece != undefined && chosenPiece != event.target.previousElementSibling)
-            chosenPiece.classList.remove('chosen')
+        if (checkersLogic.chosenPiece != undefined && checkersLogic.chosenPiece != event.target.previousElementSibling)
+            checkersLogic.chosenPiece.classList.remove('chosen')
         event.target.previousElementSibling.classList.toggle('chosen')
-        chosenPiece = event.target.previousElementSibling
+        checkersLogic.chosenPiece = event.target.previousElementSibling
     }
 }
 function KingDragStart(event) {
     event.stopPropagation()
-    if (!event.target.previousElementSibling.classList.contains(currentTurn == "white" ? "white" : "red")) {
+    if (!event.target.previousElementSibling.classList.contains(checkersLogic.currentTurn == "white" ? "white" : "red")) {
         event.preventDefault()
         removeHighlight()
     }
     else {
-        if (chosenPiece != undefined && chosenPiece != event.target.previousElementSibling)
-            chosenPiece.classList.remove('chosen')
+        if (checkersLogic.chosenPiece != undefined && checkersLogic.chosenPiece != event.target.previousElementSibling)
+            checkersLogic.chosenPiece.classList.remove('chosen')
         event.target.previousElementSibling.classList.toggle('chosen')
-        chosenPiece = event.target.previousElementSibling
-        // add piece background
-        const backgroundPiece = document.createElement('div')
-        backgroundPiece.addEventListener('dragover', (event) => {
-            event.stopPropagation()
-            event.preventDefault()
-
-            event.target.parentElement.parentElement.classList.remove("transparent")
-        })
-        backgroundPiece.classList.add('piece')
-        if (logicalBoardSquares[event.target.parentElement.id].color == "white")
-            event.target.previousElementSibling.classList.add('white')
-        else
-            event.target.previousElementSibling.classList.add('red')
-        if (event.target.children[0] == undefined)
-            event.target.appendChild(backgroundPiece)
-        event.target.parentElement.classList.add("transparent")
+        checkersLogic.chosenPiece = event.target.previousElementSibling
+        addBackgroundPiece(event)
     }
+}
+function addBackgroundPiece(event) {
+    const backgroundPiece = document.createElement('div')
+    backgroundPiece.addEventListener('dragover', (event) => {
+        event.stopPropagation()
+        event.preventDefault()
+        event.target.parentElement.parentElement.classList.remove("transparent")
+    })
+    backgroundPiece.classList.add('piece')
+    if (checkersLogic.logicalBoardSquares[event.target.parentElement.id].color == "white")
+        event.target.previousElementSibling.classList.add('white')
+    else
+        event.target.previousElementSibling.classList.add('red')
+    if (event.target.children[0] == undefined)
+        event.target.appendChild(backgroundPiece)
+    event.target.parentElement.classList.add("transparent")
 }
