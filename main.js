@@ -226,11 +226,11 @@ const userUI = {
                         return
                     checkersLogic.inBetweenCaptures = false
                     if (!checkersLogic.AreThereLegalMoves())
-                        endGameWithWin()
+                        userUI.endGameWithWin()
                     checkersLogic.toggleTurn()
                     userUI.currentTurnBox.classList.toggle('white')
                     if (!checkersLogic.AreThereLegalMoves())
-                        endGameWithWin()
+                        userUI.endGameWithWin()
                 }
                 userUI.removeHighlight()
             }
@@ -239,9 +239,9 @@ const userUI = {
         }
     },
     endGameWithWin: function () {
-        gameIsWonModal.innerText = `Game over. ${checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
-        gameIsWonModal.classList.remove('display-none')
-        backDrop.classList.remove('display-none')
+        userUI.gameIsWonModal.innerText = `Game over. ${checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
+        userUI.gameIsWonModal.classList.remove('display-none')
+        userUI.backDrop.classList.remove('display-none')
     },
     canKeepCapturing: function (indexFrom, indexTo) {
         if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && checkersLogic.canPieceCapture(checkersLogic.logicalBoardSquares[indexTo])) {
@@ -332,17 +332,17 @@ userUI.backDrop.addEventListener('click', (event) => {
 })
 userUI.resignButton.addEventListener('click', (event) => {
     event.stopPropagation()
-    endGameWithWin()
+    userUI.endGameWithWin()
 })
 userUI.drawButton.addEventListener('click', (event) => {
     event.stopPropagation()
-    drawOfferModal.classList.remove('display-none')
-    backDrop.classList.remove('display-none')
+    userUI.drawOfferModal.classList.remove('display-none')
+    userUI.backDrop.classList.remove('display-none')
 })
 userUI.yesButton.addEventListener('click', (event) => {
     event.stopPropagation()
-    drawOfferModal.classList.add('display-none')
-    gameIsDrawModal.classList.remove('display-none')
+    userUI.drawOfferModal.classList.add('display-none')
+    userUI.gameIsDrawModal.classList.remove('display-none')
 })
 window.addEventListener('click', () => {
     userUI.removeHighlight()
