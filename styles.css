@@ -192,8 +192,6 @@
 @media(max-width:25rem) {
     #chess-board {
         position: absolute;
-        /* top: 5rem;
-        left: 25vw; */
         display: grid;
         grid-template-rows: repeat(8, 1fr);
         grid-template-columns: repeat(8, 1fr);

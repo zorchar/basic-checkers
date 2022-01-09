@@ -13,7 +13,6 @@ const gameIsDrawModal = document.getElementById("game-is-draw")
 const gameIsWonModal = document.getElementById("game-is-won")
 const currentTurnBox = document.getElementById("current-turn")
 const backDrop = document.getElementById("back-drop")
-let squaresWhichCanCapture = []
 
 backDrop.addEventListener('click', (event) => {
     event.stopPropagation()
@@ -89,18 +88,12 @@ function printBoard() {
             else
                 theSquare = j % 2 == 0 ? blackSquare : whiteSquare
             theSquare.id = i * 8 + j
-            // theSquare.addEventListener('dragstart', (event)=>{
-            //     event.stopPropagation()
-            //     event.preventDefault()
-            // })
+            theSquare.addEventListener('click', squareIsClicked)
+            theSquare.addEventListener('drop', squareIsClicked)
             theSquare.addEventListener('dragover', (event) => {
                 event.stopPropagation()
                 event.preventDefault()
-                event.target.classList.remove("transparent")
-                event.target.parentElement.classList.remove("transparent")
             })
-            theSquare.addEventListener('click', squareIsClicked)
-            theSquare.addEventListener('drop', squareIsClicked)
             graphicalBoard.appendChild(theSquare)
         }
     }
@@ -143,16 +136,15 @@ function removeHighlight() {
 }
 function AddPiecesToGraphicalBoard() {
     for (let i = 0; i < 63; i++) {
-        if (logicalBoardSquares[i] == undefined)
-            continue
-        if (logicalBoardSquares[i].color == undefined)
+        if (logicalBoardSquares[i] == undefined || logicalBoardSquares[i].color == undefined)
             continue
         const piece = document.createElement('div')
         piece.draggable = "true"
         piece.addEventListener('click', (event) => {
             event.stopPropagation()
-            if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red"))
+            if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red")){
                 removeHighlight()
+            }
             else {
                 if (chosenPiece != undefined && chosenPiece != event.target)
                     chosenPiece.classList.remove('chosen')
@@ -160,13 +152,11 @@ function AddPiecesToGraphicalBoard() {
                 chosenPiece = event.target
             }
         })
-        piece.addEventListener('dragstart', (event) => {
+        piece.addEventListener('dragstart', PieceDragStart)
+        function PieceDragStart(event){
             event.stopPropagation()
-
-            if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red")) {
-                event.preventDefault()
-                removeHighlight()
-            }
+            if (!event.target.classList.contains(currentTurn == "white" ? "white" : "red")) 
+                event.preventDefault()            
             else {
                 if (chosenPiece != undefined && chosenPiece != event.target)
                     chosenPiece.classList.remove('chosen')
@@ -174,7 +164,7 @@ function AddPiecesToGraphicalBoard() {
                 chosenPiece = event.target
                 event.target.parentElement.classList.add("transparent")
             }
-        })
+        }
         piece.addEventListener('dragover', (event) => {
             event.stopPropagation()
             event.preventDefault()
@@ -267,7 +257,7 @@ function squareIsClicked(event) {
         if (chosenPiece != undefined && chosenPiece.classList.contains(currentTurn == "white" ? "white" : "red")) {
             if (isLegalMove(indexFrom, indexTo)) {
                 if (Math.abs(getRow(indexFrom) - getRow(indexTo)) == 1)
-                    burnPieces()
+                    burnPiecesWhichCanCapture()
                 makeMove(indexFrom, indexTo)
                 if (getRow(indexTo) == (currentTurn == "white" ? 0 : 7))
                     logicalBoardSquares[indexTo].type = "king"
@@ -278,7 +268,6 @@ function squareIsClicked(event) {
                 if (!isThereLegalMoves())
                     endGameWithWin()
                 toggleTurn()
-                canCurrentPlayerCapture()
                 currentTurnBox.classList.toggle('white')
                 if (!isThereLegalMoves())
                     endGameWithWin()
@@ -299,18 +288,15 @@ function isThereLegalMoves() {
     }
     return false
 }
-function resetSquaresWhichCanCapture() {
-    squaresWhichCanCapture = []
+function burnPiecesWhichCanCapture() {
     for (let square of logicalBoardSquares) {
         if (square == undefined || square.type == undefined || square.color != currentTurn)
             continue
-        if (canPieceCapture(square))
-            squaresWhichCanCapture.push(square)
+        if (canPieceCapture(square)) {
+            delete square.color
+            delete square.type
+        }
     }
-}
-function canCurrentPlayerCapture() {
-    resetSquaresWhichCanCapture()
-    return (squaresWhichCanCapture.length == 0 ? false : true)
 }
 function canPieceCapture(squarePiece) {
     if (getRow(squarePiece.id) + 2 < 8 && getColumn(squarePiece.id) + 2 < 8)
@@ -339,11 +325,5 @@ function canKeepCapturing(indexFrom, indexTo) {
         chosenPiece.classList.toggle('chosen')
         inBetweenCaptures = true
         return true
-    }
-}
-function burnPieces() {
-    for (let square of squaresWhichCanCapture) {
-        delete square.color
-        delete square.type
     }
 }
