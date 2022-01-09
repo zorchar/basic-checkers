@@ -1,6 +1,9 @@
 * {
     margin: 0;
     box-sizing: border-box;
+    max-width: 406px;
+    max-height: 406px;
+
 }
 
 #chess-board {
@@ -33,6 +36,8 @@
 .square {
     width: 5.9vw;
     height: 5.9vw;
+    max-width: 50px;
+    max-height: 50px;
 }
 
 .piece {
@@ -47,6 +52,8 @@
     position: relative;
     top: 1%;
     left: 1%;
+    max-width: 47px;
+    max-height: 47px;
 }
 .king .piece{
     position: absolute;
@@ -76,6 +83,17 @@
     /* left: 25%; */
     cursor: move;
     background: transparent;
+    max-width: 25px;
+    max-height: 25px;
+}
+@media(min-width:850px) {
+    .king{
+        margin: 14px;
+    }
+    .king .piece{
+        top: -13px;
+        left: -17px; 
+        }
 }
 
 .modal {

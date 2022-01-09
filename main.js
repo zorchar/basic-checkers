@@ -67,7 +67,7 @@ const checkersLogic = {
             if (square == undefined || square.type == undefined || square.color != checkersLogic.currentTurn)
                 continue
             for (let i = 0; i < 63; i++)
-                if (square.id != undefined && this.isLegalMove(square.id, i))
+                if (square.id != undefined && checkersLogic.isLegalMove(square.id, i))
                     return true
         }
         return false
@@ -76,7 +76,7 @@ const checkersLogic = {
         for (let square of checkersLogic.logicalBoardSquares) {
             if (square == undefined || square.type == undefined || square.color != checkersLogic.currentTurn)
                 continue
-            if (this.canPieceCapture(square)) {
+            if (checkersLogic.canPieceCapture(square)) {
                 delete square.color
                 delete square.type
             }
@@ -84,16 +84,16 @@ const checkersLogic = {
     },
     canPieceCapture: function (squarePiece) {
         if (getRow(squarePiece.id) + 2 < 8 && getColumn(squarePiece.id) + 2 < 8)
-            if (this.isLegalMove(squarePiece.id, squarePiece.id + 18))
+            if (checkersLogic.isLegalMove(squarePiece.id, squarePiece.id + 18))
                 return true
         if (getRow(squarePiece.id) + 2 < 8 && getColumn(squarePiece.id) - 2 < 8)
-            if (this.isLegalMove(squarePiece.id, squarePiece.id + 14))
+            if (checkersLogic.isLegalMove(squarePiece.id, squarePiece.id + 14))
                 return true
         if (getRow(squarePiece.id) - 2 < 8 && getColumn(squarePiece.id) + 2 < 8)
-            if (this.isLegalMove(squarePiece.id, squarePiece.id - 14))
+            if (checkersLogic.isLegalMove(squarePiece.id, squarePiece.id - 14))
                 return true
         if (getRow(squarePiece.id) - 2 < 8 && getColumn(squarePiece.id) - 2 < 8)
-            if (this.isLegalMove(squarePiece.id, squarePiece.id - 18))
+            if (checkersLogic.isLegalMove(squarePiece.id, squarePiece.id - 18))
                 return true
         return false
     }
@@ -111,7 +111,7 @@ const userUI = {
     currentTurnBox: document.getElementById("current-turn"),
     backDrop: document.getElementById("back-drop"),//maybe outside maybe dont use
     printBoard: function () {
-        this.graphicalBoard.replaceChildren();
+        userUI.graphicalBoard.replaceChildren();
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 const whiteSquare = document.createElement('div')
@@ -124,16 +124,16 @@ const userUI = {
                 else
                     theSquare = j % 2 == 0 ? blackSquare : whiteSquare
                 theSquare.id = i * 8 + j
-                theSquare.addEventListener('click', this.squareIsTarget)
-                theSquare.addEventListener('drop', this.squareIsTarget)
+                theSquare.addEventListener('click', userUI.squareIsTarget)
+                theSquare.addEventListener('drop', userUI.squareIsTarget)
                 theSquare.addEventListener('dragover', (event) => {
                     event.stopPropagation()
                     event.preventDefault()
                 })
-                this.graphicalBoard.appendChild(theSquare)
+                userUI.graphicalBoard.appendChild(theSquare)
             }
         }
-        this.AddPiecesToGraphicalBoard()
+        userUI.AddPiecesToGraphicalBoard()
     },
     removeHighlight: function () {
         if (userUI.chosenPiece != undefined)
@@ -155,8 +155,8 @@ const userUI = {
     CreatePiece: function (i) {
         const piece = document.createElement('div')
         piece.draggable = "true"
-        piece.addEventListener('click', this.PieceClick)
-        piece.addEventListener('dragstart', this.PieceDragStartHandler)
+        piece.addEventListener('click', userUI.PieceClick)
+        piece.addEventListener('dragstart', userUI.PieceDragStartHandler)
         piece.addEventListener('dragover', (event) => {
             event.stopPropagation()
             event.preventDefault()
@@ -173,9 +173,9 @@ const userUI = {
         for (let i = 0; i < 63; i++) {
             if (checkersLogic.logicalBoardSquares[i] == undefined || checkersLogic.logicalBoardSquares[i].color == undefined)
                 continue
-            this.graphicalBoard.children[i].appendChild(this.CreatePiece(i))
+            userUI.graphicalBoard.children[i].appendChild(userUI.CreatePiece(i))
             if (checkersLogic.logicalBoardSquares[i].type == "king") {
-                this.graphicalBoard.children[i].appendChild(this.CreateKing())
+                userUI.graphicalBoard.children[i].appendChild(userUI.CreateKing())
             }
         }
     },
@@ -183,8 +183,8 @@ const userUI = {
         const king = document.createElement('div')
         king.classList.add("king")
         king.draggable = "true"
-        king.addEventListener('click', this.KingClick)
-        king.addEventListener('dragstart', this.KingDragStart)
+        king.addEventListener('click', userUI.KingClick)
+        king.addEventListener('dragstart', userUI.KingDragStart)
         king.addEventListener('dragover', (event) => {
             event.stopPropagation()
             event.preventDefault()
@@ -307,16 +307,6 @@ const userUI = {
 
     }
 }
-// const graphicalBoard = document.getElementById('chess-board')
-// const drawButton = document.getElementById('draw-button')
-// const resignButton = document.getElementById('resign-button')
-// const noButton = document.getElementById('no-button')
-// const yesButton = document.getElementById('yes-button')
-// const drawOfferModal = document.getElementById('draw-offer')
-// const gameIsDrawModal = document.getElementById("game-is-draw")
-// const gameIsWonModal = document.getElementById("game-is-won")
-// const currentTurnBox = document.getElementById("current-turn")
-// const backDrop = document.getElementById("back-drop")
 
 checkersLogic.initPieces()
 userUI.printBoard()
