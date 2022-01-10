@@ -2,25 +2,32 @@
     margin: 0;
     box-sizing: border-box;
     max-width: 100vw;
-    max-height: 406px;
+    /* max-height: 450px; */
 
 }
-#create-new-game-container{
+
+#create-new-game-container {
     width: 100vw;
     height: 10vh;
     text-align: center;
     font-size: 5vh;
-    background: chartreuse;
+    background: #b1a7a6;
 }
-#checkers-game-container{
+
+#checkers-game-container {
     position: relative;
-    width:100vw;
-    height: 100vh;
+    width: 100vw;
+    height: calc(56.2vw + 6px);
+    /* background: #f5f3f4; */
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
 }
+
 #chess-board {
     position: absolute;
-    /* top: 5rem;
-    left: 25vw; */
+    /* top: 5rem; */
+    left: 25vw;
     display: grid;
     grid-template-rows: repeat(8, 1fr);
     grid-template-columns: repeat(8, 1fr);
@@ -38,8 +45,8 @@
 }
 
 .red {
-    background: red;
-    border-color: red;
+    background: #e5383b;
+    border-color: #e5383b;
 }
 
 .white {
@@ -69,10 +76,11 @@
     max-width: 47px;
     max-height: 47px;
 }
-.king .piece{
+
+.king .piece {
     position: absolute;
     top: -1.45vw;
-    left: -1.75vw; 
+    left: -1.75vw;
 }
 
 .red.chosen {
@@ -100,29 +108,62 @@
     max-width: 25px;
     max-height: 25px;
 }
+
 @media(min-width:850px) {
-    .king{
+    * {
+        max-width: 850px;
+    }
+
+    #chess-board {
+        left: 220px;
+        top: 10%;
+    }
+
+    #checkers-game-container {
+        height: 506px;
+        max-width: 850px;
+    }
+
+    .king {
         margin: 14px;
     }
-    .king .piece{
+
+    .king .piece {
         top: -13px;
-        left: -17px; 
-        }
+        left: -17px;
+    }
 }
 
 .modal {
     position: absolute;
-    top: 30vh;
+    top: 10vh;
     left: 17.5vw;
     width: 63vw;
     height: 40vw;
     opacity: 90%;
-    background: rgb(85, 77, 189);
+    background: #d3d3d3;
     font-size: 8vw;
     text-align: center;
     z-index: 4;
+}
 
+.black {
+    background: black;
+    border-color: black;
+}
 
+.red {
+    background: #e5383b;
+    border-color: #e5383b;
+}
+
+.white {
+    background: white;
+    border-color: white;
+}
+
+.piece {
+    border-color: black;
 }
 
 .button {
@@ -130,13 +171,13 @@
     border-style: solid;
     border-width: 3px;
     opacity: 100%;
-    background: rgb(66, 60, 136);
+    background: #b1a7a6;
 
     /* display: inline-block; */
 }
 
 .draw-offer {
-    background: rgb(85, 77, 189);
+    background: #d3d3d3;
     font-size: 8vw;
     text-align: center;
     display: grid;
@@ -159,33 +200,10 @@
     grid-area: accept-draw;
 }
 
-#resign-button {
-    position: absolute;
-    top: 25vw;
-    right: 5vw;
-    width: 10vw;
-    height: 5vw;
-    background: rgb(158, 49, 49);
-    text-align: center;
-    font-size: 3.0vw;
-
-}
-
-#draw-button {
-    position: absolute;
-    top: 15vw;
-    right: 5vw;
-    width: 10vw;
-    height: 5vw;
-    background: rgb(82, 172, 164);
-    text-align: center;
-    font-size: 3.0vw;
-
-}
 
 #back-drop {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     background: black;
     opacity: 80%;
     z-index: 3;
@@ -195,12 +213,35 @@
     display: none;
 }
 
+#resign-button {
+    position: absolute;
+    top: 91%;
+    left: 50%;
+    width: 24%;
+    height: 5.2vw;
+    background: #ba181b;
+    text-align: center;
+    font-size: 3.0vw;
+}
+
+#draw-button {
+    position: absolute;
+    top: 91%;
+    left: 26%;
+    width: 24%;
+    height: 5.2vw;
+    background: #d3d3d3;
+    text-align: center;
+    font-size: 3.0vw;
+
+}
+
 #current-turn {
     position: absolute;
-    top: 5vw;
-    right: 5vw;
-    width: 10vw;
-    height: 5vw;
+    top: 0%;
+    left: 26%;
+    width: 48%;
+    height: 5.8vw;
     text-align: center;
     border-style: solid;
     border-color: black;
@@ -210,12 +251,15 @@
 
 #game-is-won {
     height: 20vw;
+    top: 15vh;
 }
 
 #game-is-draw {
     height: 20vw;
+    top: 15vh;
 }
-.transparent{
+
+.transparent {
     background: transparent;
 }
 
@@ -230,27 +274,30 @@
         border-width: 3px;
         border-right-width: 3px;
     }
+
     .square {
         width: 11.8vw;
         height: 11.8vw;
     }
-    
+
     .piece {
         width: 11.8vw;
         height: 11.8vw;
     }
-    .king .piece{
+
+    .king .piece {
         position: absolute;
         top: -1.45vw;
-        left: -1.75vw; 
-    }           
+        left: -1.75vw;
+    }
+
     .king {
         width: 5.8vw;
         height: 5.8vw;
         margin: 3vw;
     }
-    
-    
+
+
     .draw-offer {
         top: 20vw;
         left: 15vw;
@@ -259,28 +306,31 @@
     #game-is-won {
         top: 35vw;
         left: 18vw;
-        
+
 
     }
-    #current-turn{
-        right:0vw;
-        width:100vw;
+
+    #current-turn {
+        right: 0vw;
+        width: 100vw;
         height: 25vw;
-        top:95vw;
+        top: 95vw;
         font-size: 15vw;
     }
-    #draw-button{
-        left:0vw;
-        width:99.9vw;
+
+    #draw-button {
+        left: 0vw;
+        width: 99.9vw;
         height: 25vw;
-        top:120vw;
+        top: 120vw;
         font-size: 15vw;
     }
-    #resign-button{
-        right:0vw;
-        width:100vw;
+
+    #resign-button {
+        right: 0vw;
+        width: 100vw;
         height: 25vw;
-        top:145vw;
+        top: 145vw;
         font-size: 15vw;
     }
 

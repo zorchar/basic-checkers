@@ -345,6 +345,7 @@ function createUI() {
         endGameWithWin: function () {
             UI.gameIsWonModal.innerText = `Game over. ${checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
             UI.gameIsWonModal.classList.remove('display-none')
+            UI.gameIsWonModal.classList.add(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "red" : "white")
             UI.backDrop.classList.remove('display-none')
         },
         canKeepCapturing: function (indexFrom, indexTo) {
