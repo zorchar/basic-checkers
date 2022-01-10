@@ -192,6 +192,10 @@ function createUI() {
     const noButton = drawOfferModal.appendChild(createDivWithID('no-button'))
     noButton.classList.add('no', 'button')
     noButton.innerText = "No"
+    noButton.addEventListener('click',(event)=>{
+        drawOfferModal.classList.add('display-none')
+        backDrop.classList.add('display-none')
+    })
     const yesButton = drawOfferModal.appendChild(createDivWithID('yes-button'))
     yesButton.classList.add('yes', 'button')
     yesButton.innerText = "Yes"

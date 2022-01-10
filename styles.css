@@ -176,10 +176,10 @@ main {
 
 .modal {
     position: absolute;
-    top: 10vh;
+    /* top: 10vh;
     left: 17.5vw;
     width: 63vw;
-    height: 40vw;
+    height: 40vw; */
     opacity: 90%;
     background: #d3d3d3;
     font-size: 8vw;
@@ -188,14 +188,52 @@ main {
 }
 
 #game-is-won {
-    top: 35vw;
-    left: 18vw;
-    height: 20vw;
+    height: 6rem;
+    top: 40%;
+    width: 100%;
+    left: auto;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-is-won.display-none {
+    display: none;
 }
 
 #game-is-draw {
-    height: 20vw;
-    top: 15vh;
+    height: 6rem;
+    top: 40%;
+    width: 100%;
+    left: auto;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-is-draw.display-none {
+    display: none;
+}
+
+#draw-offer {
+    background: #d3d3d3;
+    font-size: 3rem;
+    text-align: center;
+    display: grid;
+    grid-template-rows: 3fr 2fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'accept-draw accept-draw'
+        'yes no';
+    top: 25%;
+    height: 30%;
+    width: 100%;
+    left: auto;
+}
+
+#draw-offer.display-none {
+    display: none;
 }
 
 #back-drop {
@@ -232,21 +270,6 @@ main {
 
 }
 
-#draw-offer {
-    background: #d3d3d3;
-    font-size: 8vw;
-    text-align: center;
-    display: grid;
-    grid-template-rows: 3fr 2fr;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: 'accept-draw accept-draw'
-        'yes no';
-    top: 15vh;
-}
-
-#draw-offer.display-none {
-    display: none;
-}
 
 .yes {
     grid-area: yes;
@@ -265,16 +288,28 @@ main {
         width: 72px;
         height: 72px;
     }
+
     #checkers-game-container {
         width: 600px;
     }
-    #chess-board{
+
+    #chess-board {
         width: 99%;
     }
-    main{
+
+    main {
         flex-direction: row;
-        justify-content: left;        
+        justify-content: left;
     }
+
+    #back-drop {
+        width: 600px;
+    }
+
+    #draw-offer {
+        font-size: 5rem;
+        top: 25%;
+    }        
 }
 
 
