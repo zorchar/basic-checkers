@@ -1,18 +1,20 @@
 let checkersGamesCounter = 0
 const checkersGames = []
 createCheckersGame()
+createCheckersGame()
+
 function createCheckersGame() {
     checkersGames.push(createBlankCheckersGame())
     checkersGames[checkersGamesCounter].checkersLogic = createCheckersLogic()
-    checkersGames[checkersGamesCounter].userUI = createUserUI()
-    // checkersGames[checkersGamesCounter].userUI.graphicalBoard.gameID = checkersGamesCounter
+    checkersGames[checkersGamesCounter].UI = createUI()
+    // checkersGames[checkersGamesCounter].UI.graphicalBoard.gameID = checkersGamesCounter
 
     checkersGamesCounter++
 }
 function createBlankCheckersGame() {
     const NewCheckersGame = {
         checkersLogic: "",
-        userUI: "",
+        UI: "",
     }
     return NewCheckersGame
 }
@@ -128,22 +130,87 @@ function createCheckersLogic() {
     checkersLogic.initPieces()
     return checkersLogic
 }
-function createUserUI() {
-    const userUI = {
+function createUI() {
+    function createDivWithID(id) {
+        div = document.createElement('div')
+        div.id = id
+        return div
+    }
+    // create board visually
+    // graphicalBoard = document.createElement('div')
+    // graphicalBoard.id = 'chess-board'
+    // //append chess board to document
+    // document.body.appendChild(graphicalBoard)
+
+    //create buttons
+    // drawButton = document.createElement('div')
+    // drawButton.id = 'draw-button'
+    // //append draw button
+    // graphicalBoard.appendChild(drawButton)
+
+    // resignButton = document.createElement('div')
+    // resignButton.id = 'resign-button'
+    // //append resign button
+    // graphicalBoard.appendChild(resignButton)
+
+    const checkersGameContainer = document.body.appendChild(createDivWithID('checkers-game-container'))
+    const graphicalBoard = checkersGameContainer.appendChild(createDivWithID('chess-board'))
+    const resignButton = checkersGameContainer.appendChild(createDivWithID('resign-button'))
+    resignButton.innerText = "Resign"
+    resignButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        UI.endGameWithWin()
+    })
+    const drawButton = checkersGameContainer.appendChild(createDivWithID('draw-button'))
+    drawButton.innerText = "Draw"
+    drawButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        drawOfferModal.classList.remove('display-none')
+        backDrop.classList.remove('display-none')
+    })
+    const drawOfferModal = checkersGameContainer.appendChild(createDivWithID('draw-offer'))
+    drawOfferModal.classList.add('modal', 'display-none')
+    const gameIsDrawModal = checkersGameContainer.appendChild(createDivWithID('game-is-draw'))
+    gameIsDrawModal.innerText = "Game Drawn"
+    gameIsDrawModal.classList.add('modal', 'display-none')
+    const acceptDraw = drawOfferModal.appendChild(createDivWithID('accept-draw'))
+    acceptDraw.innerText = "Would you like to accept draw?"
+    const gameIsWonModal = checkersGameContainer.appendChild(createDivWithID('game-is-won'))
+    gameIsWonModal.classList.add('modal', 'display-none')
+    const currentTurnBox = checkersGameContainer.appendChild(createDivWithID('current-turn'))
+    currentTurnBox.innerText = "Current turn"
+    currentTurnBox.classList.add('red', 'white')
+    const backDrop = checkersGameContainer.appendChild(createDivWithID('back-drop'))
+    backDrop.classList.add('display-none')
+    // backDrop.addEventListener('click', (event) => {
+    //     event.stopPropagation()
+    // }) //makes backdrop disappear after click on it
+    const noButton = drawOfferModal.appendChild(createDivWithID('no-button'))
+    noButton.classList.add('no', 'button')
+    noButton.innerText = "No"
+    const yesButton = drawOfferModal.appendChild(createDivWithID('yes-button'))
+    yesButton.classList.add('yes', 'button')
+    yesButton.innerText = "Yes"
+    yesButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        drawOfferModal.classList.add('display-none')
+        gameIsDrawModal.classList.remove('display-none')
+    })
+    const UI = {
         chosenPiece: undefined,
-        graphicalBoard: document.getElementById('chess-board'),
-        drawButton: document.getElementById('draw-button'),
-        resignButton: document.getElementById('resign-button'),
-        noButton: document.getElementById('no-button'),
-        yesButton: document.getElementById('yes-button'),
-        drawOfferModal: document.getElementById('draw-offer'),
-        gameIsDrawModal: document.getElementById("game-is-draw"),
-        gameIsWonModal: document.getElementById("game-is-won"),
-        currentTurnBox: document.getElementById("current-turn"),
-        backDrop: document.getElementById("back-drop"),//maybe outside maybe dont use
+        checkersGameContainer: checkersGameContainer,
+        graphicalBoard: graphicalBoard,
+        drawButton: drawButton,
+        resignButton: resignButton,
+        noButton: noButton,
+        yesButton: yesButton,
+        drawOfferModal: drawOfferModal,
+        gameIsDrawModal: gameIsDrawModal,
+        gameIsWonModal: gameIsWonModal,
+        currentTurnBox: currentTurnBox,
+        backDrop: backDrop,//maybe outside maybe dont use
         printBoard: function () {
-            originalID = userUI.graphicalBoard.gameID
-            userUI.graphicalBoard.replaceChildren();
+            UI.graphicalBoard.replaceChildren();
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {
                     const whiteSquare = document.createElement('div')
@@ -156,48 +223,47 @@ function createUserUI() {
                     else
                         theSquare = j % 2 == 0 ? blackSquare : whiteSquare
                     theSquare.id = i * 8 + j
-                    theSquare.addEventListener('click', userUI.squareIsTarget)
-                    theSquare.addEventListener('drop', userUI.squareIsTarget)
+                    theSquare.addEventListener('click', UI.squareIsTarget)
+                    theSquare.addEventListener('drop', UI.squareIsTarget)
                     theSquare.addEventListener('dragover', (event) => {
                         event.stopPropagation()
                         event.preventDefault()
                     })
-                    userUI.graphicalBoard.appendChild(theSquare)
+                    UI.graphicalBoard.appendChild(theSquare)
                 }
             }
-            userUI.graphicalBoard.gameID = originalID
-            userUI.AddPiecesToGraphicalBoard()
+            UI.AddPiecesToGraphicalBoard()
 
         },
         removeHighlight: function () {
-            if (userUI.chosenPiece != undefined)
-                userUI.chosenPiece.classList.remove('chosen')
-            userUI.chosenPiece = undefined
+            if (UI.chosenPiece != undefined)
+                UI.chosenPiece.classList.remove('chosen')
+            UI.chosenPiece = undefined
         },
         PieceDragStartHandler: function (event) {
             event.stopPropagation()
-            if (!event.target.classList.contains(checkersGames[event.target.parentElement.parentElement.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
+            if (!event.target.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
                 event.preventDefault()
             else {
-                if (userUI.chosenPiece != undefined && userUI.chosenPiece != event.target)
-                    userUI.chosenPiece.classList.remove('chosen')
+                if (UI.chosenPiece != undefined && UI.chosenPiece != event.target)
+                    UI.chosenPiece.classList.remove('chosen')
                 event.target.classList.toggle('chosen')
-                userUI.chosenPiece = event.target
+                UI.chosenPiece = event.target
                 event.target.parentElement.classList.add("transparent")
             }
         },
-        CreatePiece: function (i, gameID) {
+        CreatePiece: function (i) {
             const piece = document.createElement('div')
             piece.draggable = "true"
-            piece.addEventListener('click', userUI.PieceClick)
-            piece.addEventListener('dragstart', userUI.PieceDragStartHandler)
+            piece.addEventListener('click', UI.PieceClick)
+            piece.addEventListener('dragstart', UI.PieceDragStartHandler)
             piece.addEventListener('dragover', (event) => {
                 event.stopPropagation()
                 event.preventDefault()
                 event.target.parentElement.classList.remove("transparent")
             })
             piece.classList.add('piece')
-            if (checkersGames[gameID].checkersLogic.logicalBoardSquares[i].color == "white")
+            if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].color == "white")
                 piece.classList.add('white')
             else
                 piece.classList.add('red')
@@ -205,11 +271,11 @@ function createUserUI() {
         },
         AddPiecesToGraphicalBoard: function () {
             for (let i = 0; i < 63; i++) {
-                if (checkersGames[userUI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i] == undefined || checkersGames[userUI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].color == undefined)
+                if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i] == undefined || checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].color == undefined)
                     continue
-                userUI.graphicalBoard.children[i].appendChild(userUI.CreatePiece(i, userUI.graphicalBoard.gameID))
-                if (checkersGames[userUI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].type == "king") {
-                    userUI.graphicalBoard.children[i].appendChild(userUI.CreateKing())
+                UI.graphicalBoard.children[i].appendChild(UI.CreatePiece(i))
+                if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].type == "king") {
+                    UI.graphicalBoard.children[i].appendChild(UI.CreateKing())
                 }
             }
         },
@@ -217,8 +283,8 @@ function createUserUI() {
             const king = document.createElement('div')
             king.classList.add("king")
             king.draggable = "true"
-            king.addEventListener('click', userUI.KingClick)
-            king.addEventListener('dragstart', userUI.KingDragStart)
+            king.addEventListener('click', UI.KingClick)
+            king.addEventListener('dragstart', UI.KingDragStart)
             king.addEventListener('dragover', (event) => {
                 event.stopPropagation()
                 event.preventDefault()
@@ -230,97 +296,97 @@ function createUserUI() {
             event.stopPropagation()
             let indexFrom
             let indexTo = parseInt(event.target.id)
-            if (userUI.chosenPiece != undefined)
-                indexFrom = parseInt(userUI.chosenPiece.parentElement.id)
+            if (UI.chosenPiece != undefined)
+                indexFrom = parseInt(UI.chosenPiece.parentElement.id)
             if (event.target.classList.contains("white"))
-                userUI.removeHighlight()
+                UI.removeHighlight()
             //if square has a piece
             else if (event.target.children[0] != undefined) {
                 //if current turn's piece
-                if (event.target.children[0].classList.contains(checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
-                    if (userUI.chosenPiece != undefined && userUI.chosenPiece != event.target.children[0])
-                        userUI.chosenPiece.classList.remove('chosen')
+                if (event.target.children[0].classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                    if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.children[0])
+                        UI.chosenPiece.classList.remove('chosen')
                     event.target.children[0].classList.toggle('chosen')
-                    userUI.chosenPiece = event.target.children[0]
+                    UI.chosenPiece = event.target.children[0]
                 }
                 else
-                    userUI.removeHighlight()
+                    UI.removeHighlight()
             }
             //if square is empty
             else {
-                if (userUI.chosenPiece != undefined && userUI.chosenPiece.classList.contains(checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
-                    if (checkersGames[userUI.graphicalBoard.gameID].checkersLogic.isLegalMove(indexFrom, indexTo)) {
+                if (UI.chosenPiece != undefined && UI.chosenPiece.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                    if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.isLegalMove(indexFrom, indexTo)) {
                         if (Math.abs(getRow(indexFrom) - getRow(indexTo)) == 1)
-                            checkersGames[userUI.graphicalBoard.gameID].checkersLogic.burnPiecesWhichCanCapture()
-                        checkersGames[userUI.graphicalBoard.gameID].checkersLogic.makeMove(indexFrom, indexTo)
-                        if (getRow(indexTo) == (checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? 0 : 7))
-                            checkersGames[userUI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[indexTo].type = "king"
-                        userUI.printBoard()
-                        if (userUI.canKeepCapturing(indexFrom, indexTo))
+                            checkersGames[UI.graphicalBoard.gameID].checkersLogic.burnPiecesWhichCanCapture()
+                        checkersGames[UI.graphicalBoard.gameID].checkersLogic.makeMove(indexFrom, indexTo)
+                        if (getRow(indexTo) == (checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? 0 : 7))
+                            checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[indexTo].type = "king"
+                        UI.printBoard()
+                        if (UI.canKeepCapturing(indexFrom, indexTo))
                             return
-                        checkersGames[userUI.graphicalBoard.gameID].checkersLogic.inBetweenCaptures = false
-                        if (!checkersGames[userUI.graphicalBoard.gameID].checkersLogic.AreThereLegalMoves() && checkersGames[userUI.graphicalBoard.gameID].checkersLogic.HowManyPiecesLeft() == 0)
-                            userUI.endGameWithWin()
-                        checkersGames[userUI.graphicalBoard.gameID].checkersLogic.toggleTurn()
-                        userUI.currentTurnBox.classList.toggle('white')
-                        if (!checkersGames[userUI.graphicalBoard.gameID].checkersLogic.AreThereLegalMoves())
-                            userUI.endGameWithWin()
+                        checkersGames[UI.graphicalBoard.gameID].checkersLogic.inBetweenCaptures = false
+                        if (!checkersGames[UI.graphicalBoard.gameID].checkersLogic.AreThereLegalMoves() && checkersGames[UI.graphicalBoard.gameID].checkersLogic.HowManyPiecesLeft() == 0)
+                            UI.endGameWithWin()
+                        checkersGames[UI.graphicalBoard.gameID].checkersLogic.toggleTurn()
+                        UI.currentTurnBox.classList.toggle('white')
+                        if (!checkersGames[UI.graphicalBoard.gameID].checkersLogic.AreThereLegalMoves())
+                            UI.endGameWithWin()
                     }
-                    userUI.removeHighlight()
+                    UI.removeHighlight()
                 }
                 else
-                    userUI.removeHighlight()
+                    UI.removeHighlight()
             }
         },
         endGameWithWin: function () {
-            userUI.gameIsWonModal.innerText = `Game over. ${checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
-            userUI.gameIsWonModal.classList.remove('display-none')
-            userUI.backDrop.classList.remove('display-none')
+            UI.gameIsWonModal.innerText = `Game over. ${checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
+            UI.gameIsWonModal.classList.remove('display-none')
+            UI.backDrop.classList.remove('display-none')
         },
         canKeepCapturing: function (indexFrom, indexTo) {
-            if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && checkersGames[userUI.graphicalBoard.gameID].checkersLogic.canPieceCapture(checkersGames[userUI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[indexTo])) {
-                userUI.removeHighlight()
-                userUI.chosenPiece = userUI.graphicalBoard.children[indexTo].firstChild
-                userUI.chosenPiece.classList.toggle('chosen')
-                checkersGames[userUI.graphicalBoard.gameID].checkersLogic.inBetweenCaptures = true
+            if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && checkersGames[UI.graphicalBoard.gameID].checkersLogic.canPieceCapture(checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[indexTo])) {
+                UI.removeHighlight()
+                UI.chosenPiece = UI.graphicalBoard.children[indexTo].firstChild
+                UI.chosenPiece.classList.toggle('chosen')
+                checkersGames[UI.graphicalBoard.gameID].checkersLogic.inBetweenCaptures = true
                 return true
             }
         },
         PieceClick: function (event) {
             event.stopPropagation()
-            if (!event.target.classList.contains(checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
-                userUI.removeHighlight()
+            if (!event.target.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                UI.removeHighlight()
             }
             else {
-                if (userUI.chosenPiece != undefined && userUI.chosenPiece != event.target)
-                    userUI.chosenPiece.classList.remove('chosen')
+                if (UI.chosenPiece != undefined && UI.chosenPiece != event.target)
+                    UI.chosenPiece.classList.remove('chosen')
                 event.target.classList.toggle('chosen')
-                userUI.chosenPiece = event.target
+                UI.chosenPiece = event.target
             }
         },
         KingClick: function (event) {
             event.stopPropagation()
-            if (!event.target.previousElementSibling.classList.contains(checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
-                userUI.removeHighlight()
+            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
+                UI.removeHighlight()
             else {
-                if (userUI.chosenPiece != undefined && userUI.chosenPiece != event.target.previousElementSibling)
-                    userUI.chosenPiece.classList.remove('chosen')
+                if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.previousElementSibling)
+                    UI.chosenPiece.classList.remove('chosen')
                 event.target.previousElementSibling.classList.toggle('chosen')
-                userUI.chosenPiece = event.target.previousElementSibling
+                UI.chosenPiece = event.target.previousElementSibling
             }
         },
         KingDragStart: function (event) {
             event.stopPropagation()
-            if (!event.target.previousElementSibling.classList.contains(checkersGames[userUI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
                 event.preventDefault()
-                userUI.removeHighlight()
+                UI.removeHighlight()
             }
             else {
-                if (userUI.chosenPiece != undefined && userUI.chosenPiece != event.target.previousElementSibling)
-                    userUI.chosenPiece.classList.remove('chosen')
+                if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.previousElementSibling)
+                    UI.chosenPiece.classList.remove('chosen')
                 event.target.previousElementSibling.classList.toggle('chosen')
-                userUI.chosenPiece = event.target.previousElementSibling
-                userUI.addBackgroundPiece(event)
+                UI.chosenPiece = event.target.previousElementSibling
+                UI.addBackgroundPiece(event)
             }
         },
         addBackgroundPiece: function (event) {
@@ -341,9 +407,9 @@ function createUserUI() {
 
         }
     }
-    userUI.graphicalBoard.gameID = checkersGamesCounter
-    userUI.printBoard()
-    return userUI
+    UI.graphicalBoard.gameID = checkersGamesCounter
+    UI.printBoard()
+    return UI
 }
 
 function getRow(index) {
@@ -355,25 +421,27 @@ function getColumn(index) {
 
 // needs to make this work even if more than 1 game
 
-checkersGames[0].userUI.backDrop.addEventListener('click', (event) => {
-    event.stopPropagation()
-})
-checkersGames[0].userUI.resignButton.addEventListener('click', (event) => {
-    event.stopPropagation()
-    checkersGames[0].userUI.endGameWithWin()
-})
-checkersGames[0].userUI.drawButton.addEventListener('click', (event) => {
-    event.stopPropagation()
-    checkersGames[0].userUI.drawOfferModal.classList.remove('display-none')
-    checkersGames[0].userUI.backDrop.classList.remove('display-none')
-})
-checkersGames[0].userUI.yesButton.addEventListener('click', (event) => {
-    event.stopPropagation()
-    checkersGames[0].userUI.drawOfferModal.classList.add('display-none')
-    checkersGames[0].userUI.gameIsDrawModal.classList.remove('display-none')
-})
+// checkersGames[0].UI.backDrop.addEventListener('click', (event) => {
+//     event.stopPropagation()
+// })
+// checkersGames[0].UI.resignButton.addEventListener('click', (event) => {
+//     event.stopPropagation()
+//     checkersGames[0].UI.endGameWithWin()
+// })
+// checkersGames[0].UI.drawButton.addEventListener('click', (event) => {
+//     event.stopPropagation()
+//     checkersGames[0].UI.drawOfferModal.classList.remove('display-none')
+//     checkersGames[0].UI.backDrop.classList.remove('display-none')
+// })
+// checkersGames[0].UI.yesButton.addEventListener('click', (event) => {
+//     event.stopPropagation()
+//     checkersGames[0].UI.drawOfferModal.classList.add('display-none')
+//     checkersGames[0].UI.gameIsDrawModal.classList.remove('display-none')
+// })
 window.addEventListener('click', () => {
-    checkersGames[0].userUI.removeHighlight()
-    checkersGames[0].userUI.drawOfferModal.classList.add('display-none')
-    checkersGames[0].userUI.backDrop.classList.add('display-none')
+    for (let game of checkersGames) {
+        game.UI.removeHighlight()
+        game.UI.drawOfferModal.classList.add('display-none')
+        game.UI.backDrop.classList.add('display-none')
+    }
 })

@@ -1,11 +1,15 @@
 * {
     margin: 0;
     box-sizing: border-box;
-    max-width: 406px;
+    max-width: 100vw;
     max-height: 406px;
 
 }
-
+#checkers-game-container{
+    position: relative;
+    width:100vw;
+    height: 100vh;
+}
 #chess-board {
     position: absolute;
     /* top: 5rem;
@@ -16,6 +20,9 @@
     width: calc(47.2vw + 6px);
     border-style: solid;
     border-width: 3px;
+    max-width: 406px;
+    max-height: 406px;
+
 }
 
 .black {
@@ -141,14 +148,14 @@
     grid-area: no;
 }
 
-.accept-draw {
+#accept-draw {
     grid-area: accept-draw;
 
 }
 
 
-.resign {
-    position: fixed;
+#resign-button {
+    position: absolute;
     top: 25vw;
     right: 5vw;
     width: 10vw;
@@ -159,8 +166,8 @@
 
 }
 
-.draw {
-    position: fixed;
+#draw-button {
+    position: absolute;
     top: 15vw;
     right: 5vw;
     width: 10vw;
@@ -171,7 +178,7 @@
 
 }
 
-.back-drop {
+#back-drop {
     width: 100vw;
     height: 100vh;
     background: black;
@@ -183,8 +190,8 @@
     display: none;
 }
 
-.current-turn {
-    position: fixed;
+#current-turn {
+    position: absolute;
     top: 5vw;
     right: 5vw;
     width: 10vw;
@@ -196,11 +203,11 @@
     font-size: 2vw;
 }
 
-.game-is-won {
+#game-is-won {
     height: 20vw;
 }
 
-.game-is-draw {
+#game-is-draw {
     height: 20vw;
 }
 .transparent{
@@ -244,27 +251,27 @@
         left: 15vw;
     }
 
-    .game-is-won {
+    #game-is-won {
         top: 35vw;
         left: 18vw;
         
 
     }
-    .current-turn{
+    #current-turn{
         right:0vw;
         width:100vw;
         height: 25vw;
         top:95vw;
         font-size: 15vw;
     }
-    .draw{
+    #draw-button{
         left:0vw;
         width:99.9vw;
         height: 25vw;
         top:120vw;
         font-size: 15vw;
     }
-    .resign{
+    #resign-button{
         right:0vw;
         width:100vw;
         height: 25vw;
