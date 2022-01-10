@@ -2,7 +2,6 @@
     margin: 0;
 }
 
-
 .black {
     background: black;
     border-color: black;
@@ -69,15 +68,9 @@ main {
     left: -0.5%;
     display: flex;
     flex-direction: column;
-    /* justify-content: center;
-    align-items: center; */
-
     position: relative;
     min-height: calc(100vh - 3rem);
     width: 98%;
-    /* width: 100vw;
-    height: 100vh; */
-    /* background: #f5f3f4; */
     border-width: 2px;
     border-style: solid;
     border-color: black;
@@ -94,17 +87,12 @@ main {
 }
 
 #chess-board {
-
     width: 97%;
     display: grid;
     grid-template-rows: repeat(8, 1fr);
     grid-template-columns: repeat(8, 1fr);
-    /* width: calc(47.2vw + 6px); */
     border-style: solid;
     border-width: 3px;
-    /* max-width: 406px;
-    max-height: 406px; */
-
 }
 
 #draw-button {
@@ -113,8 +101,6 @@ main {
     font-size: 3rem;
     text-align: center;
     background: #d3d3d3;
-
-
 }
 
 #resign-button {
@@ -129,8 +115,6 @@ main {
 .square {
     width: 100%;
     height: 11.8vw;
-    /* max-width: 50px;
-    max-height: 50px; */
 }
 
 .piece {
@@ -141,7 +125,7 @@ main {
     border-color: black;
     width: 95%;
     height: 95%;
-    cursor: move;
+    cursor:grabbing;
     position: relative;
     top: 1%;
     left: 1%;
@@ -155,7 +139,7 @@ main {
     border-style: solid;
     border-width: 3px;
     border-color: black;
-    cursor: move;
+    cursor: grabbing;
     background: transparent;
     max-width: 25px;
     max-height: 25px;
@@ -167,7 +151,6 @@ main {
 
 .king .piece {
     position: absolute;
-    /* check relative*/
     top: -4.2vw;
     left: -4.5vw;
     width: 11.8vw;
@@ -176,10 +159,6 @@ main {
 
 .modal {
     position: absolute;
-    /* top: 10vh;
-    left: 17.5vw;
-    width: 63vw;
-    height: 40vw; */
     opacity: 90%;
     background: #d3d3d3;
     font-size: 8vw;
@@ -270,7 +249,6 @@ main {
 
 }
 
-
 .yes {
     grid-area: yes;
 }
@@ -309,186 +287,13 @@ main {
     #draw-offer {
         font-size: 5rem;
         top: 25%;
-    }        
-}
-
-
-
-
-
-
-
-
-
-
-/* #draw-button {
-    position: absolute;
-    top: 91%;
-    left: 26%;
-    width: 24%;
-    height: 9%;
-    background: #d3d3d3;
-    text-align: center;
-    font-size: 5vw;
-
-} */
-
-
-
-
-
-
-
-
-/* .king .piece {
-    position: absolute;
-    top: -1.45vw;
-    left: -1.75vw;
-} */
-
-/* .king {
-    position: relative;
-    margin: 1.6vw;
-    bottom: 100%;
-    width: 2.9vw;
-    height: 2.9vw;
-    box-sizing: border-box;
-    border-radius: 50%;
-    border-style: solid;
-    border-width: 3px;
-    border-color: black;
-    cursor: move;
-    background: transparent;
-    max-width: 25px;
-    max-height: 25px;
-} */
-
-/* @media(min-width:1850px) {
-
-    #chess-board {
-        left: 220px;
-        top: 10%;
-    }
-
-    #checkers-game-container {
-        height: 506px;
-        max-width: 850px;
-    }
-
-    .king {
-        margin: 14px;
-    }
-
-    .king .piece {
-        top: -13px;
-        left: -17px;
-    }
-
-    #resign-button {
-        font-size: 30px;
-    }
-
-    #draw-button {
-        font-size: 30px;
-    }
-
-    #current-turn {
-        font-size: 30px;
-    }
-
-    #create-new-game-container {
-        font-size: 70px;
-        height: 87px;
-    }
-
-} */
-
-
-/* .black {
-    background: black;
-    border-color: black;
-}
-
-.red {
-    background: #e5383b;
-    border-color: #e5383b;
-}
-
-.white {
-    background: white;
-    border-color: white;
-} */
-
-/* .piece {
-    border-color: black;
-} */
-
-
-
-
-
-
-/* #game-is-won {
-    height: 20vw;
-    top: 15vh;
-} */
-
-/* #game-is-draw {
-    height: 20vw;
-    top: 15vh;
-} */
-
-
-/* @media(max-width:850px) { */
-/* #chess-board {
-        position: absolute;
-        display: grid;
-        grid-template-rows: repeat(8, 1fr);
-        grid-template-columns: repeat(8, 1fr);
-        width: 100vw;
-        border-style: solid;
-        border-width: 3px;
-        border-right-width: 3px;
-    } */
-
-/* .square {
-        width: 11.8vw;
-        height: 11.8vw;
-    }
-
-    .piece {
-        width: 11.8vw;
-        height: 11.8vw;
-    }
+    }  
 
     .king .piece {
         position: absolute;
-        top: -1.45vw;
-        left: -1.75vw;
-    }
-
-    .king {
-        width: 5.8vw;
-        height: 5.8vw;
-        margin: 3vw;
-    }
-
-
-    .draw-offer {
-        top: 20vw;
-        left: 15vw;
-    }
-
-
- */
-
-
-/* #resign-button {
-        right: 0vw;
-        width: 100vw;
-        height: 25vw;
-        top: 142vw;
-        font-size: 15vw;
-    } */
-
-/* } */
+        top: -24px;
+        left: -27px;
+        width: 72px;
+        height: 72px;
+    }    
+}
