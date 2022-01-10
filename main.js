@@ -443,13 +443,13 @@ function getColumn(index) {
 //     checkersGames[0].UI.drawOfferModal.classList.add('display-none')
 //     checkersGames[0].UI.gameIsDrawModal.classList.remove('display-none')
 // })
-window.addEventListener('click', () => {
-    for (let game of checkersGames) {
-        game.UI.removeHighlight()
-        game.UI.drawOfferModal.classList.add('display-none')
-        game.UI.backDrop.classList.add('display-none')
-    }
-})
+// window.addEventListener('click', () => {
+//     for (let game of checkersGames) {
+//         game.UI.removeHighlight()
+//         game.UI.drawOfferModal.classList.add('display-none')
+//         game.UI.backDrop.classList.add('display-none')
+//     }
+// })
 document.getElementById('create-new-game-container').addEventListener('click', (event)=>{
     event.stopPropagation()
     createCheckersGame()
