@@ -151,20 +151,23 @@ function createUI() {
     // //append resign button
     // graphicalBoard.appendChild(resignButton)
 
-    const checkersGameContainer = document.body.appendChild(createDivWithID('checkers-game-container'))
+    const checkersGameContainer = document.body.children[1].appendChild(createDivWithID('checkers-game-container'))
+    const currentTurnBox = checkersGameContainer.appendChild(createDivWithID('current-turn'))
+    currentTurnBox.innerText = "Current turn"
+    currentTurnBox.classList.add('red', 'white')
     const graphicalBoard = checkersGameContainer.appendChild(createDivWithID('chess-board'))
-    const resignButton = checkersGameContainer.appendChild(createDivWithID('resign-button'))
-    resignButton.innerText = "Resign"
-    resignButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        UI.endGameWithWin()
-    })
     const drawButton = checkersGameContainer.appendChild(createDivWithID('draw-button'))
     drawButton.innerText = "Draw"
     drawButton.addEventListener('click', (event) => {
         event.stopPropagation()
         drawOfferModal.classList.remove('display-none')
         backDrop.classList.remove('display-none')
+    })
+    const resignButton = checkersGameContainer.appendChild(createDivWithID('resign-button'))
+    resignButton.innerText = "Resign"
+    resignButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        UI.endGameWithWin()
     })
     const drawOfferModal = checkersGameContainer.appendChild(createDivWithID('draw-offer'))
     drawOfferModal.classList.add('modal', 'display-none')
@@ -181,9 +184,6 @@ function createUI() {
     gameIsWonModal.addEventListener('click', (event) => {
         event.stopPropagation()
     })
-    const currentTurnBox = checkersGameContainer.appendChild(createDivWithID('current-turn'))
-    currentTurnBox.innerText = "Current turn"
-    currentTurnBox.classList.add('red', 'white')
     const backDrop = checkersGameContainer.appendChild(createDivWithID('back-drop'))
     backDrop.classList.add('display-none')
     backDrop.addEventListener('click', (event) => {
