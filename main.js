@@ -1,7 +1,5 @@
 let checkersGamesCounter = 0
 const checkersGames = []
-createCheckersGame()
-createCheckersGame()
 
 function createCheckersGame() {
     checkersGames.push(createBlankCheckersGame())
@@ -173,18 +171,24 @@ function createUI() {
     const gameIsDrawModal = checkersGameContainer.appendChild(createDivWithID('game-is-draw'))
     gameIsDrawModal.innerText = "Game Drawn"
     gameIsDrawModal.classList.add('modal', 'display-none')
+    gameIsDrawModal.addEventListener('click', (event) => {
+        event.stopPropagation()
+    })
     const acceptDraw = drawOfferModal.appendChild(createDivWithID('accept-draw'))
     acceptDraw.innerText = "Would you like to accept draw?"
     const gameIsWonModal = checkersGameContainer.appendChild(createDivWithID('game-is-won'))
     gameIsWonModal.classList.add('modal', 'display-none')
+    gameIsWonModal.addEventListener('click', (event) => {
+        event.stopPropagation()
+    })
     const currentTurnBox = checkersGameContainer.appendChild(createDivWithID('current-turn'))
     currentTurnBox.innerText = "Current turn"
     currentTurnBox.classList.add('red', 'white')
     const backDrop = checkersGameContainer.appendChild(createDivWithID('back-drop'))
     backDrop.classList.add('display-none')
-    // backDrop.addEventListener('click', (event) => {
-    //     event.stopPropagation()
-    // }) //makes backdrop disappear after click on it
+    backDrop.addEventListener('click', (event) => {
+        event.stopPropagation()
+    })
     const noButton = drawOfferModal.appendChild(createDivWithID('no-button'))
     noButton.classList.add('no', 'button')
     noButton.innerText = "No"
@@ -444,4 +448,8 @@ window.addEventListener('click', () => {
         game.UI.drawOfferModal.classList.add('display-none')
         game.UI.backDrop.classList.add('display-none')
     }
+})
+document.getElementById('create-new-game-container').addEventListener('click', (event)=>{
+    event.stopPropagation()
+    createCheckersGame()
 })

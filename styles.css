@@ -5,6 +5,13 @@
     max-height: 406px;
 
 }
+#create-new-game-container{
+    width: 100vw;
+    height: 10vh;
+    text-align: center;
+    font-size: 5vh;
+    background: chartreuse;
+}
 #checkers-game-container{
     position: relative;
     width:100vw;
@@ -104,7 +111,7 @@
 }
 
 .modal {
-    position: fixed;
+    position: absolute;
     top: 30vh;
     left: 17.5vw;
     width: 63vw;
@@ -150,9 +157,7 @@
 
 #accept-draw {
     grid-area: accept-draw;
-
 }
-
 
 #resign-button {
     position: absolute;
