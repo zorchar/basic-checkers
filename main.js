@@ -5,7 +5,6 @@ document.getElementById('create-new-game-container').addEventListener('click', (
     event.stopPropagation()
     createCheckersGame()
 })
-
 function createCheckersGame() {
     checkersGames.push(createBlankCheckersGame())
     checkersGames[checkersGamesCounter].checkersLogic = createCheckersLogic()
@@ -26,7 +25,6 @@ function getRow(index) {
 function getColumn(index) {
     return index % 8
 }
-
 function createCheckersLogic() {
     const checkersLogic = {
         currentTurn: "white",
@@ -177,7 +175,6 @@ function createUI() {
                 }
             }
             UI.AddPiecesToboardInterface()
-
         },
         removeHighlight: function () {
             if (UI.chosenPiece != undefined)

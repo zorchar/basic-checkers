@@ -45,7 +45,7 @@ main {
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    margin-bottom: 15%;
+    margin-bottom: 5rem;
     margin-top: 3rem;
 }
 
@@ -69,7 +69,7 @@ main {
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: calc(100vh - 3rem);
+    max-height: calc(100vh - 3rem);
     width: 98%;
     border-width: 2px;
     border-style: solid;
@@ -98,7 +98,7 @@ main {
 #draw-button {
     width: 100%;
     height: 70px;
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-align: center;
     background: #d3d3d3;
 }
@@ -106,7 +106,7 @@ main {
 #resign-button {
     width: 100%;
     height: 70px;
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-align: center;
     background: #d3d3d3;
     background: #ba181b;
@@ -267,7 +267,7 @@ main {
     }
 
     #checkers-game-container {
-        width: 600px;
+        width: 582px;
     }
 
     #chess-board {
@@ -280,7 +280,7 @@ main {
     }
 
     #back-drop {
-        width: 600px;
+        width: 584px;
     }
 
     #draw-offer {
