@@ -1,11 +1,15 @@
 let checkersGamesCounter = 0
 const checkersGames = []
 
+document.getElementById('create-new-game-container').addEventListener('click', (event) => {
+    event.stopPropagation()
+    createCheckersGame()
+})
+
 function createCheckersGame() {
     checkersGames.push(createBlankCheckersGame())
     checkersGames[checkersGamesCounter].checkersLogic = createCheckersLogic()
     checkersGames[checkersGamesCounter].UI = createUI()
-    // checkersGames[checkersGamesCounter].UI.graphicalBoard.gameID = checkersGamesCounter
 
     checkersGamesCounter++
 }
@@ -16,6 +20,13 @@ function createBlankCheckersGame() {
     }
     return NewCheckersGame
 }
+function getRow(index) {
+    return Math.floor(index / 8)
+}
+function getColumn(index) {
+    return index % 8
+}
+
 function createCheckersLogic() {
     const checkersLogic = {
         currentTurn: "white",
@@ -129,96 +140,21 @@ function createCheckersLogic() {
     return checkersLogic
 }
 function createUI() {
-    function createDivWithID(id) {
-        div = document.createElement('div')
-        div.id = id
-        return div
-    }
-    // create board visually
-    // graphicalBoard = document.createElement('div')
-    // graphicalBoard.id = 'chess-board'
-    // //append chess board to document
-    // document.body.appendChild(graphicalBoard)
-
-    //create buttons
-    // drawButton = document.createElement('div')
-    // drawButton.id = 'draw-button'
-    // //append draw button
-    // graphicalBoard.appendChild(drawButton)
-
-    // resignButton = document.createElement('div')
-    // resignButton.id = 'resign-button'
-    // //append resign button
-    // graphicalBoard.appendChild(resignButton)
-
-    const checkersGameContainer = document.body.children[1].appendChild(createDivWithID('checkers-game-container'))
-    const currentTurnBox = checkersGameContainer.appendChild(createDivWithID('current-turn'))
-    currentTurnBox.innerText = "Current turn"
-    currentTurnBox.classList.add('red', 'white')
-    const graphicalBoard = checkersGameContainer.appendChild(createDivWithID('chess-board'))
-    const drawButton = checkersGameContainer.appendChild(createDivWithID('draw-button'))
-    drawButton.innerText = "Draw"
-    drawButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        drawOfferModal.classList.remove('display-none')
-        backDrop.classList.remove('display-none')
-    })
-    const resignButton = checkersGameContainer.appendChild(createDivWithID('resign-button'))
-    resignButton.innerText = "Resign"
-    resignButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        UI.endGameWithWin()
-    })
-    const drawOfferModal = checkersGameContainer.appendChild(createDivWithID('draw-offer'))
-    drawOfferModal.classList.add('modal', 'display-none')
-    const gameIsDrawModal = checkersGameContainer.appendChild(createDivWithID('game-is-draw'))
-    gameIsDrawModal.innerText = "Game Drawn"
-    gameIsDrawModal.classList.add('modal', 'display-none')
-    gameIsDrawModal.addEventListener('click', (event) => {
-        event.stopPropagation()
-    })
-    const acceptDraw = drawOfferModal.appendChild(createDivWithID('accept-draw'))
-    acceptDraw.innerText = "Would you like to accept draw?"
-    const gameIsWonModal = checkersGameContainer.appendChild(createDivWithID('game-is-won'))
-    gameIsWonModal.classList.add('modal', 'display-none')
-    gameIsWonModal.addEventListener('click', (event) => {
-        event.stopPropagation()
-    })
-    const backDrop = checkersGameContainer.appendChild(createDivWithID('back-drop'))
-    backDrop.classList.add('display-none')
-    backDrop.addEventListener('click', (event) => {
-        event.stopPropagation()
-    })
-    const noButton = drawOfferModal.appendChild(createDivWithID('no-button'))
-    noButton.classList.add('no', 'button')
-    noButton.innerText = "No"
-    noButton.addEventListener('click',(event)=>{
-        drawOfferModal.classList.add('display-none')
-        backDrop.classList.add('display-none')
-    })
-    const yesButton = drawOfferModal.appendChild(createDivWithID('yes-button'))
-    yesButton.classList.add('yes', 'button')
-    yesButton.innerText = "Yes"
-    yesButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        drawOfferModal.classList.add('display-none')
-        gameIsDrawModal.classList.remove('display-none')
-    })
     const UI = {
         chosenPiece: undefined,
-        checkersGameContainer: checkersGameContainer,
-        graphicalBoard: graphicalBoard,
-        drawButton: drawButton,
-        resignButton: resignButton,
-        noButton: noButton,
-        yesButton: yesButton,
-        drawOfferModal: drawOfferModal,
-        gameIsDrawModal: gameIsDrawModal,
-        gameIsWonModal: gameIsWonModal,
-        currentTurnBox: currentTurnBox,
-        backDrop: backDrop,//maybe outside maybe dont use
-        printBoard: function () {
-            UI.graphicalBoard.replaceChildren();
+        checkersGameContainer: "checkersGameContainer",
+        boardInterface: "boardInterface",
+        drawButton: "drawButton",
+        resignButton: "resignButton",
+        noButton: "noButton",
+        yesButton: "yesButton",
+        drawOfferModal: "drawOfferModal",
+        gameIsDrawModal: "gameIsDrawModal",
+        gameIsWonModal: "gameIsWonModal",
+        currentTurnBox: "currentTurnBox",
+        backDrop: "backDrop",
+        printBoard: () => {
+            UI.boardInterface.replaceChildren();
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {
                     const whiteSquare = document.createElement('div')
@@ -237,10 +173,10 @@ function createUI() {
                         event.stopPropagation()
                         event.preventDefault()
                     })
-                    UI.graphicalBoard.appendChild(theSquare)
+                    UI.boardInterface.appendChild(theSquare)
                 }
             }
-            UI.AddPiecesToGraphicalBoard()
+            UI.AddPiecesToboardInterface()
 
         },
         removeHighlight: function () {
@@ -250,7 +186,7 @@ function createUI() {
         },
         PieceDragStartHandler: function (event) {
             event.stopPropagation()
-            if (!event.target.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
+            if (!event.target.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
                 event.preventDefault()
             else {
                 if (UI.chosenPiece != undefined && UI.chosenPiece != event.target)
@@ -271,19 +207,19 @@ function createUI() {
                 event.target.parentElement.classList.remove("transparent")
             })
             piece.classList.add('piece')
-            if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].color == "white")
+            if (checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i].color == "white")
                 piece.classList.add('white')
             else
                 piece.classList.add('red')
             return piece
         },
-        AddPiecesToGraphicalBoard: function () {
+        AddPiecesToboardInterface: function () {
             for (let i = 0; i < 63; i++) {
-                if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i] == undefined || checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].color == undefined)
+                if (checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i] == undefined || checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i].color == undefined)
                     continue
-                UI.graphicalBoard.children[i].appendChild(UI.CreatePiece(i))
-                if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[i].type == "king") {
-                    UI.graphicalBoard.children[i].appendChild(UI.CreateKing())
+                UI.boardInterface.children[i].appendChild(UI.CreatePiece(i))
+                if (checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i].type == "king") {
+                    UI.boardInterface.children[i].appendChild(UI.CreateKing())
                 }
             }
         },
@@ -311,7 +247,7 @@ function createUI() {
             //if square has a piece
             else if (event.target.children[0] != undefined) {
                 //if current turn's piece
-                if (event.target.children[0].classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                if (event.target.children[0].classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
                     if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.children[0])
                         UI.chosenPiece.classList.remove('chosen')
                     event.target.children[0].classList.toggle('chosen')
@@ -322,22 +258,22 @@ function createUI() {
             }
             //if square is empty
             else {
-                if (UI.chosenPiece != undefined && UI.chosenPiece.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
-                    if (checkersGames[UI.graphicalBoard.gameID].checkersLogic.isLegalMove(indexFrom, indexTo)) {
+                if (UI.chosenPiece != undefined && UI.chosenPiece.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                    if (checkersGames[UI.boardInterface.gameID].checkersLogic.isLegalMove(indexFrom, indexTo)) {
                         if (Math.abs(getRow(indexFrom) - getRow(indexTo)) == 1)
-                            checkersGames[UI.graphicalBoard.gameID].checkersLogic.burnPiecesWhichCanCapture()
-                        checkersGames[UI.graphicalBoard.gameID].checkersLogic.makeMove(indexFrom, indexTo)
-                        if (getRow(indexTo) == (checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? 0 : 7))
-                            checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[indexTo].type = "king"
+                            checkersGames[UI.boardInterface.gameID].checkersLogic.burnPiecesWhichCanCapture()
+                        checkersGames[UI.boardInterface.gameID].checkersLogic.makeMove(indexFrom, indexTo)
+                        if (getRow(indexTo) == (checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? 0 : 7))
+                            checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[indexTo].type = "king"
                         UI.printBoard()
                         if (UI.canKeepCapturing(indexFrom, indexTo))
                             return
-                        checkersGames[UI.graphicalBoard.gameID].checkersLogic.inBetweenCaptures = false
-                        if (!checkersGames[UI.graphicalBoard.gameID].checkersLogic.AreThereLegalMoves() && checkersGames[UI.graphicalBoard.gameID].checkersLogic.HowManyPiecesLeft() == 0)
+                        checkersGames[UI.boardInterface.gameID].checkersLogic.inBetweenCaptures = false
+                        if (!checkersGames[UI.boardInterface.gameID].checkersLogic.AreThereLegalMoves() && checkersGames[UI.boardInterface.gameID].checkersLogic.HowManyPiecesLeft() == 0)
                             UI.endGameWithWin()
-                        checkersGames[UI.graphicalBoard.gameID].checkersLogic.toggleTurn()
+                        checkersGames[UI.boardInterface.gameID].checkersLogic.toggleTurn()
                         UI.currentTurnBox.classList.toggle('white')
-                        if (!checkersGames[UI.graphicalBoard.gameID].checkersLogic.AreThereLegalMoves())
+                        if (!checkersGames[UI.boardInterface.gameID].checkersLogic.AreThereLegalMoves())
                             UI.endGameWithWin()
                     }
                     UI.removeHighlight()
@@ -347,23 +283,23 @@ function createUI() {
             }
         },
         endGameWithWin: function () {
-            UI.gameIsWonModal.innerText = `Game over. ${checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
+            UI.gameIsWonModal.innerText = `Game over. ${checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
             UI.gameIsWonModal.classList.remove('display-none')
-            UI.gameIsWonModal.classList.add(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "red" : "white")
+            UI.gameIsWonModal.classList.add(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "red" : "white")
             UI.backDrop.classList.remove('display-none')
         },
         canKeepCapturing: function (indexFrom, indexTo) {
-            if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && checkersGames[UI.graphicalBoard.gameID].checkersLogic.canPieceCapture(checkersGames[UI.graphicalBoard.gameID].checkersLogic.logicalBoardSquares[indexTo])) {
+            if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && checkersGames[UI.boardInterface.gameID].checkersLogic.canPieceCapture(checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[indexTo])) {
                 UI.removeHighlight()
-                UI.chosenPiece = UI.graphicalBoard.children[indexTo].firstChild
+                UI.chosenPiece = UI.boardInterface.children[indexTo].firstChild
                 UI.chosenPiece.classList.toggle('chosen')
-                checkersGames[UI.graphicalBoard.gameID].checkersLogic.inBetweenCaptures = true
+                checkersGames[UI.boardInterface.gameID].checkersLogic.inBetweenCaptures = true
                 return true
             }
         },
         PieceClick: function (event) {
             event.stopPropagation()
-            if (!event.target.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+            if (!event.target.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
                 UI.removeHighlight()
             }
             else {
@@ -375,7 +311,7 @@ function createUI() {
         },
         KingClick: function (event) {
             event.stopPropagation()
-            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
+            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
                 UI.removeHighlight()
             else {
                 if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.previousElementSibling)
@@ -386,7 +322,7 @@ function createUI() {
         },
         KingDragStart: function (event) {
             event.stopPropagation()
-            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.graphicalBoard.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
                 event.preventDefault()
                 UI.removeHighlight()
             }
@@ -416,45 +352,107 @@ function createUI() {
 
         }
     }
-    UI.graphicalBoard.gameID = checkersGamesCounter
+    UI.checkersGameContainer = document.body.children[1].appendChild(createDivWithID('checkers-game-container'))
+    UI.currentTurnBox = currentTurnBoxInit()
+    UI.boardInterface = UI.checkersGameContainer.appendChild(createDivWithID('chess-board'))
+    UI.drawButton = drawButtonInit()
+    UI.resignButton = resignButtonInit()
+    UI.drawOfferModal = drawOfferModalInit()
+    UI.gameIsDrawModal = gameIsDrawModalInit()
+    UI.acceptDraw = acceptDrawInit()
+    UI.gameIsWonModal = gameIsWonModalInit()
+    UI.backDrop = backDropInit()
+    UI.noButton = noButtonInit()
+    UI.yesButton = yesButtonInit()
+    UI.boardInterface.gameID = checkersGamesCounter
     UI.printBoard()
     return UI
-}
 
-function getRow(index) {
-    return Math.floor(index / 8)
+    function createDivWithID(id) {
+        div = document.createElement('div')
+        div.id = id
+        return div
+    }
+    function currentTurnBoxInit() {
+        const currentTurnBox = UI.checkersGameContainer.appendChild(createDivWithID('current-turn'))
+        currentTurnBox.innerText = "Current turn"
+        currentTurnBox.classList.add('red', 'white')
+        return currentTurnBox
+    }
+    function drawButtonInit() {
+        const drawButton = UI.checkersGameContainer.appendChild(createDivWithID('draw-button'))
+        drawButton.innerText = "Draw"
+        drawButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            UI.drawOfferModal.classList.remove('display-none')
+            UI.backDrop.classList.remove('display-none')
+        })
+        return drawButton
+    }
+    function resignButtonInit() {
+        const resignButton = UI.checkersGameContainer.appendChild(createDivWithID('resign-button'))
+        resignButton.innerText = "Resign"
+        resignButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            UI.endGameWithWin()
+        })
+        return resignButton
+    }
+    function drawOfferModalInit() {
+        const drawOfferModal = UI.checkersGameContainer.appendChild(createDivWithID('draw-offer'))
+        drawOfferModal.classList.add('modal', 'display-none')
+        return drawOfferModal
+    }
+    function gameIsDrawModalInit() {
+        const gameIsDrawModal = UI.checkersGameContainer.appendChild(createDivWithID('game-is-draw'))
+        gameIsDrawModal.innerText = "Game Drawn"
+        gameIsDrawModal.classList.add('modal', 'display-none')
+        gameIsDrawModal.addEventListener('click', (event) => {
+            event.stopPropagation()
+        })
+        return gameIsDrawModal
+    }
+    function acceptDrawInit() {
+        const acceptDraw = UI.drawOfferModal.appendChild(createDivWithID('accept-draw'))
+        acceptDraw.innerText = "Would you like to accept draw?"
+        return acceptDraw
+    }
+    function gameIsWonModalInit() {
+        const gameIsWonModal = UI.checkersGameContainer.appendChild(createDivWithID('game-is-won'))
+        gameIsWonModal.classList.add('modal', 'display-none')
+        gameIsWonModal.addEventListener('click', (event) => {
+            event.stopPropagation()
+        })
+        return gameIsWonModal
+    }
+    function backDropInit() {
+        const backDrop = UI.checkersGameContainer.appendChild(createDivWithID('back-drop'))
+        backDrop.classList.add('display-none')
+        backDrop.addEventListener('click', (event) => {
+            event.stopPropagation()
+        })
+        return backDrop
+    }
+    function noButtonInit() {
+        const noButton = UI.drawOfferModal.appendChild(createDivWithID('no-button'))
+        noButton.classList.add('no', 'button')
+        noButton.innerText = "No"
+        noButton.addEventListener('click', (event) => {
+            //stop propagation?
+            UI.drawOfferModal.classList.add('display-none')
+            UI.backDrop.classList.add('display-none')
+        })
+        return noButton
+    }
+    function yesButtonInit() {
+        const yesButton = UI.drawOfferModal.appendChild(createDivWithID('yes-button'))
+        yesButton.classList.add('yes', 'button')
+        yesButton.innerText = "Yes"
+        yesButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            UI.drawOfferModal.classList.add('display-none')
+            UI.gameIsDrawModal.classList.remove('display-none')
+        })
+        return yesButton
+    }
 }
-function getColumn(index) {
-    return index % 8
-}
-
-// needs to make this work even if more than 1 game
-
-// checkersGames[0].UI.backDrop.addEventListener('click', (event) => {
-//     event.stopPropagation()
-// })
-// checkersGames[0].UI.resignButton.addEventListener('click', (event) => {
-//     event.stopPropagation()
-//     checkersGames[0].UI.endGameWithWin()
-// })
-// checkersGames[0].UI.drawButton.addEventListener('click', (event) => {
-//     event.stopPropagation()
-//     checkersGames[0].UI.drawOfferModal.classList.remove('display-none')
-//     checkersGames[0].UI.backDrop.classList.remove('display-none')
-// })
-// checkersGames[0].UI.yesButton.addEventListener('click', (event) => {
-//     event.stopPropagation()
-//     checkersGames[0].UI.drawOfferModal.classList.add('display-none')
-//     checkersGames[0].UI.gameIsDrawModal.classList.remove('display-none')
-// })
-// window.addEventListener('click', () => {
-//     for (let game of checkersGames) {
-//         game.UI.removeHighlight()
-//         game.UI.drawOfferModal.classList.add('display-none')
-//         game.UI.backDrop.classList.add('display-none')
-//     }
-// })
-document.getElementById('create-new-game-container').addEventListener('click', (event)=>{
-    event.stopPropagation()
-    createCheckersGame()
-})
