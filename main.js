@@ -341,6 +341,10 @@ function createUI() {
                 event.preventDefault()
                 event.target.parentElement.parentElement.classList.remove("transparent")
             })
+            backgroundPiece.addEventListener('click', (event)=>{
+                event.stopPropagation()
+                event.preventDefault()
+            })
             backgroundPiece.classList.add('piece')
             if (checkersGames[event.target.parentElement.parentElement.gameID].checkersLogic.logicalBoardSquares[event.target.parentElement.id].color == "white")
                 event.target.previousElementSibling.classList.add('white')
