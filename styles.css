@@ -68,7 +68,7 @@ main {
     display: flex;
     flex-direction: column;
     position: relative;
-    max-height: calc(100vh - 8rem);
+    min-height: calc(100vh - 8rem);
     width: 100%;
     border-width: 2px;
     border-style: solid;
@@ -268,6 +268,8 @@ main {
     #checkers-game-container {
         width: 445px;
         height: calc(100vh - 8.4rem);
+        /* max-height: calc(100vh - 8rem); */
+
     }
 
     #chess-board {
