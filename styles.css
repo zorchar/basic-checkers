@@ -25,7 +25,7 @@ body {
 #game-console-header {
     position: fixed;
     top: 0;
-    width: 100%;
+    width: 102%;
     height: 3rem;
     text-align: center;
     display: flex;
@@ -38,13 +38,11 @@ body {
 }
 
 main {
-    width: 100vw;
+    width: 98vw;
     min-height: calc(100vh - 8rem);
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    /* justify-content: center;
-    align-items: left; */
     gap: 2rem;
     margin-bottom: 5rem;
     margin-top: 3rem;
@@ -53,7 +51,7 @@ main {
 #create-new-game-container {
     position: fixed;
     bottom: 0;
-    width: 100vw;
+    width: 102%;
     height: 5rem;
     text-align: center;
     font-size: 2rem;
