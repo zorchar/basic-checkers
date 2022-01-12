@@ -267,6 +267,7 @@ main {
 
     #checkers-game-container {
         width: 445px;
+        height: 657px;
     }
 
     #chess-board {
