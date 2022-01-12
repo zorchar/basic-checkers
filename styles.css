@@ -38,9 +38,10 @@ body {
 }
 
 main {
-    width: 100vw;
+    width: 98vw;
     min-height: calc(100vh - 3rem);
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
     align-items: left;
@@ -87,7 +88,7 @@ main {
 }
 
 #chess-board {
-    width: 97%;
+    width: 99%;
     display: grid;
     grid-template-rows: repeat(8, 1fr);
     grid-template-columns: repeat(8, 1fr);
@@ -276,7 +277,7 @@ main {
 
     main {
         flex-direction: row;
-        justify-content: left;
+        justify-content: center;
     }
 
     #back-drop {
