@@ -262,16 +262,17 @@ main {
 @media(min-width:465px) {
     .square {
         width: 55px;
-        height: 55px;
+        height: auto;
     }
 
     #checkers-game-container {
         width: 445px;
-        height: 657px;
+        height: calc(100vh - 8.4rem);
     }
 
     #chess-board {
         width: 99%;
+        height: 70%;
     }
 
     main {
@@ -290,9 +291,20 @@ main {
 
     .king .piece {
         position: absolute;
-        top: -17px;
-        left: -20px;
-        width: 52px;
-        height: 52px;
+        top: -18px;
+        left: -19px;
+        width: 48px;
+        height: 48px;
     }    
+    #draw-button{
+        height: 10%;
+        font-size: 5vh;
+    }
+    #resign-button{
+        height: 10%;
+        font-size: 5vh;
+    }
+    #current-turn{
+        font-size: 6vh;
+    }
 }
