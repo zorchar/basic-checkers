@@ -125,7 +125,7 @@ function createCheckersLogic() {
                     return true
             return false
         },
-        HowManyPiecesLeft() {
+        HowManyOfMyPiecesLeft() {
             let pieceCounter = 0
             for (let square of this.logicalBoardSquares) {
                 if (square != undefined && square.color == this.currentTurn)
@@ -139,6 +139,7 @@ function createCheckersLogic() {
 }
 function createUI() {
     const UI = {
+        checkersLogic : undefined,
         chosenPiece: undefined,
         checkersGameContainer: "checkersGameContainer",
         boardInterface: "boardInterface",
@@ -183,7 +184,7 @@ function createUI() {
         },
         PieceDragStartHandler: function (event) {
             event.stopPropagation()
-            if (!event.target.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
+            if (!event.target.classList.contains(UI.checkersLogic.currentTurn == "white" ? "white" : "red"))
                 event.preventDefault()
             else {
                 if (UI.chosenPiece != undefined && UI.chosenPiece != event.target)
@@ -191,6 +192,16 @@ function createUI() {
                 event.target.classList.toggle('chosen')
                 UI.chosenPiece = event.target
                 event.target.parentElement.classList.add("transparent")
+            }
+        },
+        AddPiecesToboardInterface: function () {
+            for (let i = 0; i < 63; i++) {
+                if (UI.checkersLogic.logicalBoardSquares[i] == undefined || UI.checkersLogic.logicalBoardSquares[i].color == undefined)
+                    continue
+                UI.boardInterface.children[i].appendChild(UI.CreatePiece(i))
+                if (UI.checkersLogic.logicalBoardSquares[i].type == "king") {
+                    UI.boardInterface.children[i].appendChild(UI.CreateKing())
+                }
             }
         },
         CreatePiece: function (i) {
@@ -204,21 +215,11 @@ function createUI() {
                 event.target.parentElement.classList.remove("transparent")
             })
             piece.classList.add('piece')
-            if (checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i].color == "white")
+            if (UI.checkersLogic.logicalBoardSquares[i].color == "white")
                 piece.classList.add('white')
             else
                 piece.classList.add('red')
             return piece
-        },
-        AddPiecesToboardInterface: function () {
-            for (let i = 0; i < 63; i++) {
-                if (checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i] == undefined || checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i].color == undefined)
-                    continue
-                UI.boardInterface.children[i].appendChild(UI.CreatePiece(i))
-                if (checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[i].type == "king") {
-                    UI.boardInterface.children[i].appendChild(UI.CreateKing())
-                }
-            }
         },
         CreateKing: function () {
             const king = document.createElement('div')
@@ -234,6 +235,7 @@ function createUI() {
             return king
         },
         squareIsTarget: function (event) {
+            const piece = event.target.children[0]
             event.stopPropagation()
             let indexFrom
             let indexTo = parseInt(event.target.id)
@@ -242,35 +244,35 @@ function createUI() {
             if (event.target.classList.contains("white"))
                 UI.removeHighlight()
             //if square has a piece
-            else if (event.target.children[0] != undefined) {
+            else if (piece != undefined) {
                 //if current turn's piece
-                if (event.target.children[0].classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
-                    if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.children[0])
+                if (piece.classList.contains(UI.checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                    if (UI.chosenPiece != undefined && UI.chosenPiece != piece)
                         UI.chosenPiece.classList.remove('chosen')
-                    event.target.children[0].classList.toggle('chosen')
-                    UI.chosenPiece = event.target.children[0]
+                        piece.classList.toggle('chosen')
+                    UI.chosenPiece = piece
                 }
                 else
                     UI.removeHighlight()
             }
             //if square is empty
             else {
-                if (UI.chosenPiece != undefined && UI.chosenPiece.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
-                    if (checkersGames[UI.boardInterface.gameID].checkersLogic.isLegalMove(indexFrom, indexTo)) {
+                if (UI.chosenPiece != undefined && UI.chosenPiece.classList.contains(UI.checkersLogic.currentTurn == "white" ? "white" : "red")) {
+                    if (UI.checkersLogic.isLegalMove(indexFrom, indexTo)) {
                         if (Math.abs(getRow(indexFrom) - getRow(indexTo)) == 1)
-                            checkersGames[UI.boardInterface.gameID].checkersLogic.burnPiecesWhichCanCapture()
-                        checkersGames[UI.boardInterface.gameID].checkersLogic.makeMove(indexFrom, indexTo)
-                        if (getRow(indexTo) == (checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? 0 : 7))
-                            checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[indexTo].type = "king"
+                        UI.checkersLogic.burnPiecesWhichCanCapture()
+                        UI.checkersLogic.makeMove(indexFrom, indexTo)
+                        if (getRow(indexTo) == (UI.checkersLogic.currentTurn == "white" ? 0 : 7))
+                        UI.checkersLogic.logicalBoardSquares[indexTo].type = "king"
                         UI.printBoard()
                         if (UI.canKeepCapturing(indexFrom, indexTo))
                             return
-                        checkersGames[UI.boardInterface.gameID].checkersLogic.inBetweenCaptures = false
-                        if (!checkersGames[UI.boardInterface.gameID].checkersLogic.AreThereLegalMoves() && checkersGames[UI.boardInterface.gameID].checkersLogic.HowManyPiecesLeft() == 0)
+                            UI.checkersLogic.inBetweenCaptures = false
+                        if (!UI.checkersLogic.AreThereLegalMoves() && UI.checkersLogic.HowManyOfMyPiecesLeft() == 0)
                             UI.endGameWithWin()
-                        checkersGames[UI.boardInterface.gameID].checkersLogic.toggleTurn()
+                            UI.checkersLogic.toggleTurn()
                         UI.currentTurnBox.classList.toggle('white')
-                        if (!checkersGames[UI.boardInterface.gameID].checkersLogic.AreThereLegalMoves())
+                        if (!UI.checkersLogic.AreThereLegalMoves())
                             UI.endGameWithWin()
                     }
                     UI.removeHighlight()
@@ -280,23 +282,23 @@ function createUI() {
             }
         },
         endGameWithWin: function () {
-            UI.gameIsWonModal.innerText = `Game over. ${checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
+            UI.gameIsWonModal.innerText = `Game over. ${UI.checkersLogic.currentTurn == "white" ? "Red" : "White"} wins.`
             UI.gameIsWonModal.classList.remove('display-none')
-            UI.gameIsWonModal.classList.add(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "red" : "white")
+            UI.gameIsWonModal.classList.add(UI.checkersLogic.currentTurn == "white" ? "red" : "white")
             UI.backDrop.classList.remove('display-none')
         },
         canKeepCapturing: function (indexFrom, indexTo) {
-            if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && checkersGames[UI.boardInterface.gameID].checkersLogic.canPieceCapture(checkersGames[UI.boardInterface.gameID].checkersLogic.logicalBoardSquares[indexTo])) {
+            if (Math.abs(getRow(indexTo) - getRow(indexFrom)) == 2 && UI.checkersLogic.canPieceCapture(UI.checkersLogic.logicalBoardSquares[indexTo])) {
                 UI.removeHighlight()
                 UI.chosenPiece = UI.boardInterface.children[indexTo].firstChild
                 UI.chosenPiece.classList.toggle('chosen')
-                checkersGames[UI.boardInterface.gameID].checkersLogic.inBetweenCaptures = true
+                UI.checkersLogic.inBetweenCaptures = true
                 return true
             }
         },
         PieceClick: function (event) {
             event.stopPropagation()
-            if (!event.target.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+            if (!event.target.classList.contains(UI.checkersLogic.currentTurn == "white" ? "white" : "red")) {
                 UI.removeHighlight()
             }
             else {
@@ -308,7 +310,7 @@ function createUI() {
         },
         KingClick: function (event) {
             event.stopPropagation()
-            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red"))
+            if (!event.target.previousElementSibling.classList.contains(UI.checkersLogic.currentTurn == "white" ? "white" : "red"))
                 UI.removeHighlight()
             else {
                 if (UI.chosenPiece != undefined && UI.chosenPiece != event.target.previousElementSibling)
@@ -319,7 +321,7 @@ function createUI() {
         },
         KingDragStart: function (event) {
             event.stopPropagation()
-            if (!event.target.previousElementSibling.classList.contains(checkersGames[UI.boardInterface.gameID].checkersLogic.currentTurn == "white" ? "white" : "red")) {
+            if (!event.target.previousElementSibling.classList.contains(UI.checkersLogic.currentTurn == "white" ? "white" : "red")) {
                 event.preventDefault()
                 UI.removeHighlight()
             }
@@ -350,7 +352,6 @@ function createUI() {
             if (event.target.children[0] == undefined)
                 event.target.appendChild(backgroundPiece)
             event.target.parentElement.classList.add("transparent")
-
         }
     }
     UI.checkersGameContainer = document.body.children[1].appendChild(createDivWithID('checkers-game-container'))
@@ -366,7 +367,9 @@ function createUI() {
     UI.noButton = noButtonInit()
     UI.yesButton = yesButtonInit()
     UI.boardInterface.gameID = checkersGamesCounter
+    UI.checkersLogic = checkersGames[UI.boardInterface.gameID].checkersLogic
     UI.printBoard()
+    console.table(UI)
     return UI
 
     function createDivWithID(id) {
